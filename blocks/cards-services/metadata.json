@@ -1,0 +1,27 @@
+{
+  "variantName": "cards-services",
+  "baseBlock": "cards",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "summary": "Three equal photo tiles in a row, each with a semi-transparent title bar overlaid on the bottom of the photo; teaser text expands over the photo on hover; whole tile links to the service page",
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "service-tiles",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "N rows x 2 columns; col1 = image, col2 = title (linked) + teaser paragraph",
+    "itemCount": 3,
+    "imageCount": 1,
+    "buttonCount": 0,
+    "hasDescription": true,
+    "hasCTA": true
+  },
+  "usage": {
+    "pagesUsing": ["/"],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-09T00:00:00.000Z"
+  },
+  "options": [],
+  "memberVariantIds": []
+}

@@ -1,0 +1,21 @@
+:root {
+  /* brand colors (bluewaterfinance.com) */
+  --brand-navy: rgb(1 62 117);
+  --brand-orange: rgb(239 118 37);
+  --overlay-color: rgb(0 0 0 / 75%);
+
+  /* fonts */
+  --heading-font-family: "Helvetica Neue", helvetica, roboto, arial, sans-serif;
+  --body-font-family: "Open Sans", open-sans-fallback, sans-serif;
+
+  /* colors */
+  --background-color: #fff;
+  --text-color: rgb(92 92 92);
+  --heading-color: var(--brand-navy);
+  --link-color: var(--brand-orange);
+  --link-hover-color: var(--brand-navy);
+
+  /* spacing */
+  --section-padding: 50px;
+  --content-max-width: 1400px;
+}

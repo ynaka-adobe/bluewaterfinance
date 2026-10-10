@@ -1,0 +1,51 @@
+/* columns-logos: centered row of partner logos (source: .theLogos / .containLogo) */
+.columns-logos {
+  text-align: center;
+  padding: 25px 0 32px;
+}
+
+.columns-logos .columns-logos-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.columns-logos .columns-logos-item {
+  box-sizing: border-box;
+  flex: 0 1 270px;
+  max-width: 270px;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.columns-logos .columns-logos-item p {
+  margin: 0;
+}
+
+.columns-logos .columns-logos-item a {
+  display: block;
+  line-height: 0;
+}
+
+.columns-logos .columns-logos-item picture {
+  display: block;
+  line-height: 0;
+}
+
+.columns-logos .columns-logos-item img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+@media (width >= 631px) {
+  /* source heading wrapper adds 20px below the h2 */
+  .columns-logos {
+    padding-top: 20px;
+  }
+}

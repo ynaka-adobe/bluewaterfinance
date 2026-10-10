@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "url": "https://bluewaterfinance.com/",
+  "path": "index",
+  "timestamp": "2026-10-09T04:31:12.153Z",
+  "title": "Blue Water Finance - Offering Superior Consumer Financing and Insurance services for Boat Dealers",
+  "template": "home",
+  "blocks": [
+    "carousel-hero",
+    "columns-cta",
+    "cards-services",
+    "columns-logos"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "da",
+  "sites": {
+    "bluewaterfinance": {
+      "previewOrg": "ynaka-adobe",
+      "previewSite": "bluewaterfinance",
+      "contentHostUrl": "https://content.da.live/ynaka-adobe/bluewaterfinance/",
+      "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json"
+    }
+  }
+}

@@ -1,0 +1,85 @@
+/* eslint-disable */
+/* global WebImporter */
+
+/**
+ * Transformer: bluewaterfinance.com site-wide cleanup.
+ * All selectors verified in migration-work/cleaned.html.
+ *
+ * NOTE: div.feature-banner.cycle2absolute (hero slideshow) is page content
+ * (carousel-hero) and must NOT be removed. Hidden H1 in the intro row is kept.
+ */
+const TransformHook = { beforeTransform: 'beforeTransform', afterTransform: 'afterTransform' };
+
+export default function transform(hookName, element, payload) {
+  if (hookName === TransformHook.beforeTransform) {
+    // OneTrust cookie banner + preference center (<div id="onetrust-consent-sdk">),
+    // empty tracking <iframe> after </form>.
+    WebImporter.DOMUtils.remove(element, [
+      '#onetrust-consent-sdk',
+      'iframe',
+    ]);
+
+    // ASP.NET hidden form inputs (<div class="aspNetHidden"> with __VIEWSTATE,
+    // __VIEWSTATEGENERATOR, __SCROLLPOSITIONX/Y, __EVENTTARGET, __EVENTARGUMENT).
+    // form#mainForm itself wraps the whole page, so keep it and its other contents.
+    WebImporter.DOMUtils.remove(element, [
+      'form#mainForm .aspNetHidden',
+      'input#__VIEWSTATE',
+      'input#__VIEWSTATEGENERATOR',
+      'input#__SCROLLPOSITIONX',
+      'input#__SCROLLPOSITIONY',
+      'input#__EVENTTARGET',
+      'input#__EVENTARGUMENT',
+    ]);
+
+    // cycle2 duplicate sentinel slide: <a href="/loans/" class="cycle-slide cycle-sentinel">.
+    // Scoped to the anchor only — every slide <img> also carries .cycle-sentinel,
+    // so a bare .cycle-sentinel selector would wipe out all real slide images.
+    WebImporter.DOMUtils.remove(element, ['.cycle-slideshow > a.cycle-sentinel']);
+
+    // Inline emphasis: <span class="boldBlue">Call 866-350-2583 today.</span> (bold navy)
+    // -> <strong> with the same children so the emphasis survives import.
+    const doc = element.ownerDocument;
+    element.querySelectorAll('span.boldBlue').forEach((span) => {
+      const strong = doc.createElement('strong');
+      while (span.firstChild) strong.appendChild(span.firstChild);
+      span.replaceWith(strong);
+    });
+
+    // Strip trailing <br> / &nbsp; / whitespace runs at the end of .wysiwyg paragraphs
+    // (e.g. "...today.</span><br><br><br>&nbsp;</p>"); spacing is handled in CSS.
+    element.querySelectorAll('.wysiwyg p').forEach((p) => {
+      let last = p.lastChild;
+      while (last) {
+        const isBr = last.nodeType === 1 && last.tagName === 'BR';
+        const isBlankText = last.nodeType === 3 && last.textContent.replace(/[\s ]/g, '') === '';
+        if (!isBr && !isBlankText) break;
+        const prev = last.previousSibling;
+        last.remove();
+        last = prev;
+      }
+      // Trim trailing &nbsp;/whitespace from the final text node, if any.
+      if (last && last.nodeType === 3) {
+        last.textContent = last.textContent.replace(/[\s ]+$/, '');
+      }
+    });
+  }
+
+  if (hookName === TransformHook.afterTransform) {
+    // Global chrome: header (#topContain: fraud alert, utility links, logo, nav),
+    // footer (div.footerOuter), back-to-top button (#toTheTop).
+    // cycle2 prev/next controls (#f-prev, #f-next) and caption overlay (.feature-slides-overlay).
+    WebImporter.DOMUtils.remove(element, [
+      '#topContain',
+      '.footerOuter',
+      '#toTheTop',
+      '#f-prev',
+      '#f-next',
+      '.feature-slides-overlay',
+      'noscript',
+      'script',
+      'link',
+      'style',
+    ]);
+  }
+}

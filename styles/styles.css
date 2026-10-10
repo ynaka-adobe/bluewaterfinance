@@ -11,35 +11,34 @@
  */
 
 :root {
-  /* colors */
-  --background-color: white;
+  /* colors (brand values come from brand.css) */
   --light-color: #f4f4f5;
-  --dark-color: #121416;
-  --text-color: #1f2327;
-  --link-color: #8b71fe;
-  --link-hover-color: #6e51fd;
-
-  /* fonts */
-  --body-font-family: poppins, roboto-fallback, sans-serif;
-  --heading-font-family: montserrat, roboto-condensed-fallback, sans-serif;
+  --dark-color: var(--brand-navy);
 
   /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 19px;
-  --body-font-size-xs: 17px;
+  --body-font-size-l: 16px;
+  --body-font-size-m: 16px;
+  --body-font-size-s: 14px;
+  --body-font-size-xs: 12px;
 
-  /* heading sizes */
-  --heading-font-size-xxl: 55px;
-  --heading-font-size-xl: 44px;
-  --heading-font-size-l: 34px;
-  --heading-font-size-m: 27px;
-  --heading-font-size-s: 24px;
-  --heading-font-size-xs: 22px;
+  /* heading sizes (mobile) */
+  --heading-font-size-xxl: 24px;
+  --heading-font-size-xl: 24px;
+  --heading-font-size-l: 20px;
+  --heading-font-size-m: 18px;
+  --heading-font-size-s: 16px;
+  --heading-font-size-xs: 14px;
 
-  /* nav heights */
-  --nav-height: 64px;
+  /* nav heights: alert bar (wraps to 3 lines on phones) + 122px navy bar */
+  --nav-height: 122px;
   --breadcrumbs-height: 34px;
-  --header-height: var(--nav-height);
+  --header-height: calc(97px + var(--nav-height));
+}
+
+@media (width >= 600px) {
+  :root {
+    --header-height: calc(73px + var(--nav-height));
+  }
 }
 
 /* fallback fonts */
@@ -55,31 +54,57 @@
   src: local('Arial');
 }
 
+/* metric-matched Arial stand-in while Open Sans loads (avoids layout shift) */
+@font-face {
+  font-family: open-sans-fallback;
+  size-adjust: 105.48%;
+  ascent-override: 101.07%;
+  descent-override: 27.7%;
+  line-gap-override: 0%;
+  src: local('Arial');
+}
+
+/* hides content visually but keeps it in the accessibility tree */
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
 @media (width >= 900px) {
   :root {
     /* body sizes */
-    --body-font-size-m: 18px;
-    --body-font-size-s: 16px;
-    --body-font-size-xs: 14px;
+    --body-font-size-l: 24px;
 
-    /* heading sizes */
-    --heading-font-size-xxl: 45px;
-    --heading-font-size-xl: 36px;
+    /* heading sizes (desktop, from source) */
+    --heading-font-size-xxl: 56px;
+    --heading-font-size-xl: 40px;
     --heading-font-size-l: 28px;
     --heading-font-size-m: 22px;
-    --heading-font-size-s: 20px;
-    --heading-font-size-xs: 18px;
+    --heading-font-size-s: 18px;
+    --heading-font-size-xs: 16px;
+
+    /* header: 49px alert bar + 122px navy bar (incl. 6px border) */
+    --header-height: calc(49px + var(--nav-height));
   }
 }
 
 body {
   display: none;
   margin: 0;
-  background-color: var(--background-color);
+
+  /* source frames white content panels on a navy page background */
+  background-color: var(--brand-navy);
   color: var(--text-color);
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 body.appear {
@@ -88,6 +113,11 @@ body.appear {
 
 header {
   height: var(--header-height);
+}
+
+/* once decorated, size to the real content (the alert bar wraps differently per width) */
+header:has(> .header[data-block-status="loaded"]) {
+  height: auto;
 }
 
 header .header,
@@ -112,21 +142,38 @@ h3,
 h4,
 h5,
 h6 {
-  margin-top: 0.8em;
-  margin-bottom: 0.25em;
+  margin-top: 0;
+  margin-bottom: 8px;
   font-family: var(--heading-font-family);
-  font-weight: 600;
-  line-height: 1.25;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--heading-color);
   scroll-margin: 40px;
 }
 
-h1 {
-  font-size: var(--heading-font-size-xxl);
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-}
+h1 { font-size: var(--heading-font-size-xxl); }
 h2 { font-size: var(--heading-font-size-xl); }
+
+/* source centers its section headings */
+main .default-content-wrapper > h1,
+main .default-content-wrapper > h2 {
+  text-align: center;
+}
+
+/* orange divider rule above section headings (source .breakLine) */
+main .default-content-wrapper > h2::before {
+  content: '';
+  display: block;
+  height: 2px;
+  margin: 0 0 60px;
+  background-color: var(--brand-orange);
+}
+
+@media (width >= 900px) {
+  main .default-content-wrapper > h2::before {
+    margin: 0 64px 60px;
+  }
+}
 h3 { font-size: var(--heading-font-size-l); }
 h4 { font-size: var(--heading-font-size-m); }
 h5 { font-size: var(--heading-font-size-s); }
@@ -138,8 +185,25 @@ ol,
 ul,
 pre,
 blockquote {
-  margin-top: 0.8em;
-  margin-bottom: 0.25em;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+/* lead body copy in default content (source .wysiwyg p: 24px / 1.6 desktop) */
+main .default-content-wrapper p {
+  font-size: var(--body-font-size-l);
+  line-height: 1.6;
+}
+
+/* emphasized copy (source .boldBlue) */
+main .default-content-wrapper strong {
+  color: var(--brand-navy);
+  font-weight: 600;
+}
+
+/* standalone image after body copy: source leaves several blank lines before it */
+main .default-content-wrapper p + p:has(> picture:only-child) {
+  margin-top: 6.8em;
 }
 
 code,
@@ -169,43 +233,51 @@ button {
 /* links */
 a:any-link {
   color: var(--link-color);
-  text-decoration: none;
-  word-break: break-word;
-}
-
-a:hover {
-  color: var(--link-hover-color);
   text-decoration: underline;
+  word-break: break-word;
+  transition: color 0.2s ease;
 }
 
-/* buttons */
+a:hover,
+a:focus {
+  color: var(--link-hover-color);
+}
+
+/* buttons (source .btn-slide: orange box, thin white border, square corners) */
+main .button-container {
+  margin: 16px 0;
+}
+
 a.button:any-link,
 button {
   box-sizing: border-box;
   display: inline-block;
   max-width: 100%;
-  margin: 12px 0;
-  border: 2px solid transparent;
-  border-radius: 2.4em;
-  padding: 0.5em 1.2em;
+  margin: 0;
+  border: 1px solid #fff;
+  border-radius: 0;
+  padding: 10px;
   font-family: var(--body-font-family);
+  font-size: 14px;
   font-style: normal;
-  font-weight: 500;
-  line-height: 1.25;
+  font-weight: 400;
+  line-height: 24px;
   text-align: center;
   text-decoration: none;
-  background-color: var(--link-color);
-  color: var(--background-color);
+  background-color: var(--brand-orange);
+  color: #fff;
   cursor: pointer;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: background-color 0.2s ease;
 }
 
 a.button:hover,
 a.button:focus,
 button:hover,
 button:focus {
-  background-color: var(--link-hover-color);
+  background-color: var(--brand-navy);
+  color: #fff;
   cursor: pointer;
 }
 
@@ -239,25 +311,35 @@ main img {
   width: 100%;
 }
 
-/* sections */
+/* sections (source: stacked white panels, 50px inner padding, 1400px max) */
 main > .section {
-  margin: 40px 0;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--section-padding) 0;
+  background-color: var(--background-color);
 }
 
 main > .section > div {
-  max-width: 1200px;
+  max-width: var(--content-max-width);
   margin: auto;
-  padding: 0 24px;
+  padding: 0 var(--section-padding);
+  box-sizing: border-box;
 }
 
 main > .section:first-of-type {
   margin-top: 0;
 }
 
-@media (width >= 900px) {
-  main > .section > div {
-    padding: 0 32px;
-  }
+/* full-bleed hero section has no padding and spans the viewport */
+main > .section.carousel-hero-container {
+  max-width: none;
+  padding: 0;
+  background-color: #000;
+}
+
+/* sections that open with a divider + heading start flush (source .windowOuter) */
+main > .section:has(> .default-content-wrapper:first-child > h2:first-child) {
+  padding: 0;
 }
 
 /* section metadata */

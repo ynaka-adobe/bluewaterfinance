@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "projectType": "da"
+  },
+  "templates": [
+    {
+      "name": "home",
+      "urls": [
+        "https://bluewaterfinance.com/"
+      ],
+      "representativeUrl": "https://bluewaterfinance.com/",
+      "description": "Homepage: hero slideshow, CTA tiles, service cards, intro copy and partner logos",
+      "urlPattern": "/",
+      "blocks": [
+        {
+          "name": "carousel-hero",
+          "instances": [
+            ".feature-banner .cycle-slideshow"
+          ]
+        },
+        {
+          "name": "columns-cta",
+          "instances": [
+            "#outterWrapper > .row.contentContainer:nth-of-type(3) .mainContent > .row"
+          ]
+        },
+        {
+          "name": "cards-services",
+          "instances": [
+            ".bannerContainer"
+          ]
+        },
+        {
+          "name": "columns-logos",
+          "instances": [
+            ".theLogos"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "1",
+          "name": "hero-slideshow",
+          "selector": [
+            ".feature-banner.cycle2absolute",
+            ".cycle2main"
+          ],
+          "style": null,
+          "blocks": [
+            "carousel-hero"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "2",
+          "name": "cta-tiles",
+          "selector": [
+            "#outterWrapper > .row.contentContainer:nth-of-type(3)"
+          ],
+          "style": null,
+          "blocks": [
+            "columns-cta"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "3",
+          "name": "services",
+          "selector": [
+            ".windowOuter:has(.bannerContainer)",
+            "#outterWrapper > .windowOuter:nth-of-type(4)"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-services"
+          ],
+          "defaultContent": [
+            ".windowOuter:has(.bannerContainer) .mainheading h2"
+          ]
+        },
+        {
+          "id": "4",
+          "name": "intro",
+          "selector": [
+            "#outterWrapper > .row.contentContainer:has(.wysiwyg)",
+            "#outterWrapper > .row.contentContainer:nth-of-type(5)"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            ".mainheading h1",
+            ".wysiwyg p",
+            "img[alt='all different boats']"
+          ]
+        },
+        {
+          "id": "5",
+          "name": "partners",
+          "selector": [
+            ".windowOuter:has(.theLogos)",
+            "#outterWrapper > .windowOuter:nth-of-type(6)"
+          ],
+          "style": null,
+          "blocks": [
+            "columns-logos"
+          ],
+          "defaultContent": [
+            ".financialPartnerHeading h2"
+          ]
+        }
+      ]
+    }
+  ]
+}

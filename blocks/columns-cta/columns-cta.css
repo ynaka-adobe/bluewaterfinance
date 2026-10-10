@@ -1,0 +1,89 @@
+/* columns-cta: navy CTA tiles with orange border (source .homeButton)
+ * Stacked below 1024px, three equal columns from 1024px (source Foundation large-4 breakpoint).
+ * Block bleeds 15px each side to mirror the source .row gutter so tiles center in their columns. */
+.columns-cta {
+  margin: 0 -15px;
+}
+
+.columns-cta .columns-cta-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.columns-cta .columns-cta-item {
+  min-width: 0;
+}
+
+.columns-cta .columns-cta-item p {
+  margin: 0;
+}
+
+/* 2nd tile gets 1em vertical margin when stacked (source .homeButtonTwo) */
+.columns-cta .columns-cta-item:nth-child(2) {
+  margin: 16px 0;
+}
+
+main .columns-cta a.columns-cta-link:any-link {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  padding: 16px;
+  border: 4px solid var(--brand-orange);
+  border-radius: 20px;
+  background: var(--brand-navy);
+  box-shadow: rgb(50 50 50 / 30%) -3px 4px 5px 0;
+  color: #fff;
+  text-shadow: rgb(0 0 0) 1px 2px 2px;
+  font-family: roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  word-break: normal;
+  white-space: normal;
+  cursor: pointer;
+}
+
+main .columns-cta a.columns-cta-link:hover,
+main .columns-cta a.columns-cta-link:focus {
+  background: rgb(11 50 84);
+  color: #fff;
+}
+
+.columns-cta .columns-cta-eyebrow {
+  display: block;
+}
+
+/* source .homeButtonLoan: inline 1.73em span with line-height 24px inside the 16px/24px tile;
+ * the tile's strut + baseline alignment yields the source's 28px line pitch (92px single-line tile) */
+.columns-cta .columns-cta-title {
+  display: inline;
+  font-size: 27.68px;
+  line-height: 24px;
+}
+
+/* explicit 16px/24px strut (zero-width space) so the 28px line pitch also holds when the page
+ * renders in quirks mode (local preview has no doctype), where the implicit strut is dropped */
+.columns-cta .columns-cta-title::before {
+  content: '\200b';
+  font-size: 16px;
+}
+
+@media (width >= 1024px) {
+  .columns-cta .columns-cta-row {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .columns-cta .columns-cta-item {
+    flex: 1 1 0;
+  }
+
+  .columns-cta .columns-cta-item:nth-child(2) {
+    margin: 0;
+  }
+}

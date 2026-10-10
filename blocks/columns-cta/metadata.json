@@ -1,0 +1,27 @@
+{
+  "variantName": "columns-cta",
+  "baseBlock": "columns",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "summary": "Three equal-width side-by-side CTA button tiles, each a rounded bordered box with a small uppercase eyebrow line above a large bold title line",
+    "colorScheme": "dark",
+    "density": "compact",
+    "purpose": "cta-buttons",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "1 row x N columns; each cell = one link whose text is a small line + <br> + a bold line (e.g. 'Pre-Qualify for a <br> **Boat Loan**')",
+    "itemCount": 3,
+    "imageCount": 0,
+    "buttonCount": 3,
+    "hasDescription": false,
+    "hasCTA": true
+  },
+  "usage": {
+    "pagesUsing": ["/"],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-09T00:00:00.000Z"
+  },
+  "options": [],
+  "memberVariantIds": []
+}

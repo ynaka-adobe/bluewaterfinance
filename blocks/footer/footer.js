@@ -1,20 +1,104 @@
-import { getMetadata } from '../../scripts/aem.js';
-import { loadFragment } from '../fragment/fragment.js';
+// back-to-top appears once the page has scrolled this far (source behaviour)
+const BACK_TO_TOP_OFFSET = 400;
+
+/**
+ * Fetches the footer fragment (metadata-independent dual fetch):
+ * /content first (local preview), then the site root (DA/EDS production).
+ * @returns {Promise<HTMLElement|null>}
+ */
+async function fetchFooter() {
+  let resp = await fetch('/content/footer.plain.html');
+  if (!resp.ok) resp = await fetch('/footer.plain.html');
+  if (!resp.ok) return null;
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = await resp.text();
+  const base = new URL(resp.url);
+  wrapper.querySelectorAll('img[src]').forEach((img) => {
+    img.src = new URL(img.getAttribute('src'), base).href;
+  });
+  return wrapper;
+}
+
+/**
+ * Replaces svg icon images inside links with masked spans that follow the
+ * link color; the image alt becomes screen-reader text.
+ * @param {Element} root
+ */
+function decorateIcons(root) {
+  root.querySelectorAll('a img[src$=".svg"]').forEach((img) => {
+    const icon = document.createElement('span');
+    icon.className = 'footer-icon';
+    icon.style.setProperty('--icon-url', `url("${img.src}")`);
+    icon.style.setProperty('--icon-ratio', `${img.getAttribute('width') || 1} / ${img.getAttribute('height') || 1}`);
+    icon.setAttribute('aria-hidden', 'true');
+    const label = img.getAttribute('alt');
+    if (label) {
+      const text = document.createElement('span');
+      text.className = 'visually-hidden';
+      text.textContent = label;
+      img.after(text);
+    }
+    img.closest('a').classList.add('footer-icon-link');
+    img.replaceWith(icon);
+  });
+}
+
+/**
+ * A section whose only link points to "#" is the back-to-top control.
+ * @param {Element} section
+ * @returns {boolean}
+ */
+function isBackToTop(section) {
+  const links = section.querySelectorAll('a');
+  return links.length === 1 && links[0].getAttribute('href') === '#';
+}
+
+/**
+ * Turns the back-to-top section into a fixed button shown after scrolling.
+ * @param {Element} section
+ * @returns {Element}
+ */
+function buildBackToTop(section) {
+  const link = section.querySelector('a');
+  link.className = 'footer-back-to-top';
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' });
+  });
+  const update = () => link.classList.toggle('is-visible', window.scrollY > BACK_TO_TOP_OFFSET);
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+  return link;
+}
 
 /**
  * loads and decorates the footer
  * @param {Element} block The footer block element
  */
 export default async function decorate(block) {
-  // load footer as fragment
-  const footerMeta = getMetadata('footer');
-  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
-  const fragment = await loadFragment(footerPath);
+  const fragment = await fetchFooter();
+  if (!fragment) return;
 
-  // decorate footer DOM
   block.textContent = '';
-  const footer = document.createElement('div');
-  while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
+  const inner = document.createElement('div');
+  inner.className = 'footer-inner';
 
-  block.append(footer);
+  let backToTop = null;
+  [...fragment.children].forEach((section) => {
+    if (isBackToTop(section)) {
+      backToTop = section;
+      return;
+    }
+    section.className = 'footer-column';
+    inner.append(section);
+  });
+
+  decorateIcons(inner);
+  block.append(inner);
+
+  if (backToTop) {
+    decorateIcons(backToTop);
+    block.append(buildBackToTop(backToTop));
+  }
 }

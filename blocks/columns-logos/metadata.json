@@ -1,0 +1,27 @@
+{
+  "variantName": "columns-logos",
+  "baseBlock": "columns",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "summary": "Single centered row of three partner logos, evenly spaced, no text",
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "partner-logos",
+    "imagePattern": "logo"
+  },
+  "contentPattern": {
+    "structure": "1 row x N columns; each cell = one logo image (optionally linked)",
+    "itemCount": 3,
+    "imageCount": 3,
+    "buttonCount": 0,
+    "hasDescription": false,
+    "hasCTA": false
+  },
+  "usage": {
+    "pagesUsing": ["/"],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-09T00:00:00.000Z"
+  },
+  "options": [],
+  "memberVariantIds": []
+}

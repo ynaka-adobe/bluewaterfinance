@@ -1,0 +1,26 @@
+{
+  "variantName": "carousel-hero",
+  "baseBlock": "carousel",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "summary": "Rotating full-bleed hero slideshow; one photo per slide with a semi-transparent caption bar along the bottom holding prev/next arrows, caption text and a Learn More button",
+    "layout": "full-bleed",
+    "imagePattern": "background",
+    "purpose": "hero"
+  },
+  "contentPattern": {
+    "structure": "N rows x 2 columns; col1 = slide image, col2 = caption paragraph + CTA link",
+    "itemCount": 3,
+    "imageCount": 1,
+    "buttonCount": 1,
+    "hasDescription": true,
+    "hasCTA": true
+  },
+  "usage": {
+    "pagesUsing": ["/"],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-09T00:00:00.000Z"
+  },
+  "options": [],
+  "memberVariantIds": []
+}

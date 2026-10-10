@@ -29,6 +29,10 @@ import {
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');
+  // skip when either element already belongs to an authored block or they sit in different sections
+  if (!h1 || !picture) return;
+  if (h1.closest('main > div > div') || picture.closest('main > div > div')) return;
+  if (h1.closest('main > div') !== picture.closest('main > div')) return;
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
@@ -37,11 +41,16 @@ function buildHeroBlock(main) {
   }
 }
 
+const OPEN_SANS_CSS = 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap';
+
 /**
- * load fonts.css and set a session storage flag
+ * load fonts.css (+ Open Sans, off the critical path) and set a session storage flag
  */
 async function loadFonts() {
-  await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
+  await Promise.all([
+    loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`),
+    loadCSS(OPEN_SANS_CSS),
+  ]);
   try {
     if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
   } catch (e) {
