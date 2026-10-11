@@ -67,8 +67,9 @@ var CustomImportScript = (() => {
       element.replaceWith(...element.childNodes);
       return;
     }
+    const name = element.classList.contains("subPageImageDealer") ? "hero-caption (contained)" : "hero-caption";
     const cells = [[content]];
-    const block = WebImporter.Blocks.createBlock(document2, { name: "hero-caption", cells });
+    const block = WebImporter.Blocks.createBlock(document2, { name, cells });
     element.replaceWith(block);
   }
 
@@ -366,7 +367,7 @@ var CustomImportScript = (() => {
       element.removeAttribute("data-excat-breadcrumb-title");
       if (hasMetadataBlock(element)) return;
       const meta = WebImporter.Blocks.getMetadata(doc) || {};
-      if (!meta.Image && heroSrc) {
+      if (heroSrc) {
         const img = doc.createElement("img");
         img.src = heroSrc;
         meta.Image = img;
@@ -390,7 +391,10 @@ var CustomImportScript = (() => {
     "urls": [
       "https://bluewaterfinance.com/loans/",
       "https://bluewaterfinance.com/protection/",
-      "https://bluewaterfinance.com/insurance/"
+      "https://bluewaterfinance.com/insurance/",
+      "https://bluewaterfinance.com/prequalify/",
+      "https://bluewaterfinance.com/apply/",
+      "https://bluewaterfinance.com/dealer-tools/"
     ],
     "blocks": [
       {

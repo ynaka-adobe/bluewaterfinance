@@ -115,7 +115,10 @@
       "urls": [
         "https://bluewaterfinance.com/loans/",
         "https://bluewaterfinance.com/protection/",
-        "https://bluewaterfinance.com/insurance/"
+        "https://bluewaterfinance.com/insurance/",
+        "https://bluewaterfinance.com/prequalify/",
+        "https://bluewaterfinance.com/apply/",
+        "https://bluewaterfinance.com/dealer-tools/"
       ],
       "representativeUrl": "https://bluewaterfinance.com/protection/",
       "description": "Inner content page: hero banner with caption, breadcrumb, main copy + sidebar (sub-nav, CTA tiles), boat line-up image, partner logos",

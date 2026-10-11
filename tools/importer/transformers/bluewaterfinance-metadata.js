@@ -49,7 +49,8 @@ export default function transform(hookName, element, payload) {
     if (hasMetadataBlock(element)) return;
 
     const meta = WebImporter.Blocks.getMetadata(doc) || {};
-    if (!meta.Image && heroSrc) {
+    // source og:image points at /uploads/featureImage/… which 404s; the hero image is the real one
+    if (heroSrc) {
       const img = doc.createElement('img');
       img.src = heroSrc;
       meta.Image = img;

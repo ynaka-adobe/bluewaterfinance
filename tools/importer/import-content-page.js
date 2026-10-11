@@ -27,7 +27,10 @@ const PAGE_TEMPLATE = {
   "urls": [
     "https://bluewaterfinance.com/loans/",
     "https://bluewaterfinance.com/protection/",
-    "https://bluewaterfinance.com/insurance/"
+    "https://bluewaterfinance.com/insurance/",
+    "https://bluewaterfinance.com/prequalify/",
+    "https://bluewaterfinance.com/apply/",
+    "https://bluewaterfinance.com/dealer-tools/"
   ],
   "blocks": [
     {

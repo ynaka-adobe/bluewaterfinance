@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bluewaterfinance.com/prequalify/",
+  "path": "prequalify",
+  "timestamp": "2026-10-11T04:53:36.785Z",
+  "title": "Find Out What Size Boat Your Customers Can Afford | Blue Water Finance",
+  "template": "content-page",
+  "blocks": [
+    "hero-caption",
+    "columns-cta",
+    "columns-logos"
+  ]
+}

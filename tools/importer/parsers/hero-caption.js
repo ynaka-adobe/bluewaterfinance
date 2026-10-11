@@ -42,7 +42,9 @@ export default function parse(element, { document }) {
     return;
   }
 
+  // .subPageImageDealer: 1400px-wide combo photo shown whole, caption floating above the bottom
+  const name = element.classList.contains('subPageImageDealer') ? 'hero-caption (contained)' : 'hero-caption';
   const cells = [[content]];
-  const block = WebImporter.Blocks.createBlock(document, { name: 'hero-caption', cells });
+  const block = WebImporter.Blocks.createBlock(document, { name, cells });
   element.replaceWith(block);
 }
