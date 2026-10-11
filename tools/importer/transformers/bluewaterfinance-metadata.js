@@ -60,6 +60,13 @@ export default function transform(hookName, element, payload) {
     meta.Breadcrumbs = 'true';
     if (crumbTitle) meta['Breadcrumb Title'] = crumbTitle;
     if (crumbParents) meta['Breadcrumb Parents'] = crumbParents;
+    // blog posts (/blog/<slug>/) get the blog-post template: title/byline/date/photo header styling
+    try {
+      const { pathname } = new URL(payload.params?.originalURL || payload.url);
+      if (/^\/blog\/[^/]+\/?$/i.test(pathname)) meta.Template = 'blog-post';
+    } catch (e) {
+      // no page URL (validation harness): leave the template unset
+    }
 
     element.append(WebImporter.Blocks.getMetadataBlock(doc, meta));
   }

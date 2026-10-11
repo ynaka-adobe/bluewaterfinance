@@ -119,7 +119,14 @@
         "https://bluewaterfinance.com/prequalify/",
         "https://bluewaterfinance.com/apply/",
         "https://bluewaterfinance.com/dealer-tools/",
-        "https://bluewaterfinance.com/loans/LoanCalculator/"
+        "https://bluewaterfinance.com/loans/LoanCalculator/",
+        "https://bluewaterfinance.com/about/",
+        "https://bluewaterfinance.com/contact/",
+        "https://bluewaterfinance.com/blog/",
+        "https://bluewaterfinance.com/blog/helping-your-customers-navigate-boat-titling-a-guide-for-marine-dealers/",
+        "https://bluewaterfinance.com/blog/-boat-insurance-why-offer-it-at-the-dealership/",
+        "https://bluewaterfinance.com/blog/unlocking-success-the-benefits-of-a-diverse-lender-portfolio/",
+        "https://bluewaterfinance.com/blog/maximize-success-during-boat-show-season/"
       ],
       "representativeUrl": "https://bluewaterfinance.com/protection/",
       "description": "Inner content page: hero banner with caption, breadcrumb, main copy + sidebar (sub-nav, CTA tiles), boat line-up image, partner logos",
@@ -141,6 +148,18 @@
           "name": "loan-calculator",
           "instances": [
             "#pnlContent > .wysiwyg:has(#rblType)"
+          ]
+        },
+        {
+          "name": "cards-blog",
+          "instances": [
+            "#pnlContent:has(> #divBlogItem)"
+          ]
+        },
+        {
+          "name": "form",
+          "instances": [
+            "#pnlContent table.surveyTable"
           ]
         },
         {
@@ -178,7 +197,9 @@
           "style": "main-content",
           "blocks": [
             "accordion-boxed",
-            "loan-calculator"
+            "loan-calculator",
+            "cards-blog",
+            "form"
           ],
           "defaultContent": [
             "#pnlContent > .wysiwyg p",

@@ -546,3 +546,99 @@ main .section.sidebar .default-content-wrapper a:focus {
     padding: 0 0 16px;
   }
 }
+
+/* Form block (vendor blocks/form) themed to the source survey form (bluewaterfinance.com/contact/):
+   500px column, light inset-shadow fields, small navy submit. Variables are set on the block
+   only — the vendor CSS also reads them on the section (.form-container). */
+main .section .form {
+  --form-background-color: transparent;
+  --form-error-color: rgb(255 0 0);
+  --form-label-color: rgb(92 92 92);
+  --form-label-font-size: 16px;
+  --form-field-vert-gap: 4px;
+  --form-input-border-color: rgb(221 221 221);
+  --form-input-padding: 8px;
+  --form-input-font-size: 16px;
+  --form-button-color: rgb(255 255 255);
+  --form-button-font-size: 14.4px;
+  --form-button-background-color: var(--brand-navy);
+  --form-button-background-hover-color: var(--brand-orange);
+  --form-button-border: 1px solid transparent;
+  --form-button-padding: 12px 14px;
+  --form-submit-width: auto;
+}
+
+main .section .form form {
+  max-width: 500px;
+  font-family: var(--body-font-family);
+}
+
+main .section .form input,
+main .section .form textarea {
+  height: 32px;
+  margin: 5px 0;
+  border-radius: 5px;
+  box-shadow: inset 0 0 5px rgb(221 221 221);
+  font-family: inherit;
+  line-height: 24px;
+  color: rgb(102 102 102);
+}
+
+main .section .form textarea {
+  height: 110px;
+}
+
+/* vendor form card and section padding off: the source form sits directly in the content column */
+main .section.form-container {
+  --form-padding: 0;
+}
+
+main .section div.form-wrapper {
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+main .section .form :is(.button-container, p:has(> form)) {
+  margin: 0;
+}
+
+/* blog-post template (Template: blog-post): source post header — bold blue title, small
+   byline/date, 300px photo floated left of the intro; numbered section headings clear it */
+body.blog-post main .section.main-content .default-content-wrapper > h2:first-child {
+  margin: 0 0 8px;
+  padding: 0;
+  font-family: var(--body-font-family);
+  font-weight: 700;
+  color: rgb(20 74 144);
+}
+
+body.blog-post main .section.main-content .default-content-wrapper > p.blog-post-meta {
+  margin: 0 0 10px;
+  font-size: 12px;
+  line-height: 24px;
+}
+
+body.blog-post main .section.main-content .default-content-wrapper > p.blog-post-meta span {
+  display: inline-block;
+  margin: 0 1px 0 0;
+  padding: 2px 5px;
+}
+
+body.blog-post main .section.main-content .default-content-wrapper > p.blog-post-meta + p:has(> picture) {
+  float: left;
+  box-sizing: border-box;
+  width: 300px;
+  margin: 0 0 16px;
+  padding: 0 20px 0 0;
+}
+
+body.blog-post main .section.main-content .default-content-wrapper > h2:not(:first-child) {
+  clear: both;
+}
+
+@media (width >= 600px) {
+  body.blog-post main .section.main-content .default-content-wrapper > p.blog-post-meta + p:has(> picture) {
+    margin: 0;
+  }
+}

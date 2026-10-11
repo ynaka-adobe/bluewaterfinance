@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "url": "https://bluewaterfinance.com/blog/",
+  "path": "blog",
+  "timestamp": "2026-10-11T15:28:45.547Z",
+  "title": "Blog | Blue Water Finance",
+  "template": "content-page",
+  "blocks": [
+    "hero-caption",
+    "cards-blog",
+    "columns-cta",
+    "columns-logos"
+  ]
+}

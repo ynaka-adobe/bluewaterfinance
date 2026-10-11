@@ -5,6 +5,8 @@
 import heroCaptionParser from './parsers/hero-caption.js';
 import accordionBoxedParser from './parsers/accordion-boxed.js';
 import loanCalculatorParser from './parsers/loan-calculator.js';
+import cardsBlogParser from './parsers/cards-blog.js';
+import formParser from './parsers/form.js';
 import columnsCtaParser from './parsers/columns-cta.js';
 import columnsLogosParser from './parsers/columns-logos.js';
 
@@ -18,6 +20,8 @@ const parsers = {
   'hero-caption': heroCaptionParser,
   'accordion-boxed': accordionBoxedParser,
   'loan-calculator': loanCalculatorParser,
+  'cards-blog': cardsBlogParser,
+  form: formParser,
   'columns-cta': columnsCtaParser,
   'columns-logos': columnsLogosParser,
 };
@@ -33,7 +37,14 @@ const PAGE_TEMPLATE = {
     "https://bluewaterfinance.com/prequalify/",
     "https://bluewaterfinance.com/apply/",
     "https://bluewaterfinance.com/dealer-tools/",
-    "https://bluewaterfinance.com/loans/LoanCalculator/"
+    "https://bluewaterfinance.com/loans/LoanCalculator/",
+    "https://bluewaterfinance.com/about/",
+    "https://bluewaterfinance.com/contact/",
+    "https://bluewaterfinance.com/blog/",
+    "https://bluewaterfinance.com/blog/helping-your-customers-navigate-boat-titling-a-guide-for-marine-dealers/",
+    "https://bluewaterfinance.com/blog/-boat-insurance-why-offer-it-at-the-dealership/",
+    "https://bluewaterfinance.com/blog/unlocking-success-the-benefits-of-a-diverse-lender-portfolio/",
+    "https://bluewaterfinance.com/blog/maximize-success-during-boat-show-season/"
   ],
   "blocks": [
     {
@@ -52,6 +63,18 @@ const PAGE_TEMPLATE = {
       "name": "loan-calculator",
       "instances": [
         "#pnlContent > .wysiwyg:has(#rblType)"
+      ]
+    },
+    {
+      "name": "cards-blog",
+      "instances": [
+        "#pnlContent:has(> #divBlogItem)"
+      ]
+    },
+    {
+      "name": "form",
+      "instances": [
+        "#pnlContent table.surveyTable"
       ]
     },
     {
@@ -89,7 +112,9 @@ const PAGE_TEMPLATE = {
       "style": "main-content",
       "blocks": [
         "accordion-boxed",
-        "loan-calculator"
+        "loan-calculator",
+        "cards-blog",
+        "form"
       ],
       "defaultContent": [
         "#pnlContent > .wysiwyg p",

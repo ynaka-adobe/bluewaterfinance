@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bluewaterfinance.com/about/",
+  "path": "about",
+  "timestamp": "2026-10-11T15:28:32.640Z",
+  "title": "About Us | Blue Water Finance",
+  "template": "content-page",
+  "blocks": [
+    "hero-caption",
+    "columns-cta",
+    "columns-logos"
+  ]
+}

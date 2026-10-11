@@ -1,0 +1,25 @@
+{
+  "variantName": "cards-blog",
+  "baseBlock": "cards",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "comfortable",
+    "purpose": "blog-listing",
+    "imagePattern": "thumbnail-left",
+    "summary": "Stacked cards with a 2px teal rounded border: bold blue linked title, small byline/date, 300px feature image floated left beside the excerpt and a blue rounded 'continue reading' button; image goes full width on phones."
+  },
+  "contentPattern": {
+    "structure": "N rows x 2 columns: image | heading link, byline, date, excerpt, CTA link",
+    "rows": "4 rows on /blog",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "usage": {
+    "pagesUsing": ["/blog"],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-11T00:00:00.000Z"
+  },
+  "options": [],
+  "memberVariantIds": ["cards-blog"]
+}

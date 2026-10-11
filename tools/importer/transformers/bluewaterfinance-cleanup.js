@@ -43,12 +43,17 @@ export default function transform(hookName, element, payload) {
     // The visual rule under it is a CSS border; there is no <hr> element in the markup.
     // Keep the current page's crumb label (e.g. "Product Protection") for the metadata
     // transformer, which writes it as "Breadcrumb Title". Intermediate crumbs on nested pages
-    // (Home » Loans » Loan Calculator) are kept as "Breadcrumb Parents".
-    const crumbs = [...element.querySelectorAll('.tunNavContain a')]
-      .map((a) => a.textContent.replace(/\s+/g, ' ').trim());
+    // (Home » Loans » Loan Calculator) are kept as "Breadcrumb Parents" with their link, e.g.
+    // "About Us (/about)" — /contact/ sits under About Us without sharing its path.
+    const crumbLinks = [...element.querySelectorAll('.tunNavContain a')];
+    const crumbs = crumbLinks.map((a) => a.textContent.replace(/\s+/g, ' ').trim());
     const crumbLabel = crumbs.length > 1 ? crumbs[crumbs.length - 1] : '';
     if (crumbLabel) element.setAttribute('data-excat-breadcrumb-title', crumbLabel);
-    const crumbParents = crumbs.slice(1, -1).filter(Boolean).join(', ');
+    const crumbParents = crumbLinks.slice(1, -1).map((a, i) => {
+      const label = crumbs[i + 1];
+      const href = (a.getAttribute('href') || '').toLowerCase().replace(/\/+$/, '');
+      return href.startsWith('/') ? `${label} (${href})` : label;
+    }).filter(Boolean).join(', ');
     if (crumbParents) element.setAttribute('data-excat-breadcrumb-parents', crumbParents);
     WebImporter.DOMUtils.remove(element, ['.tunNavContain']);
 
@@ -139,6 +144,12 @@ export default function transform(hookName, element, payload) {
       if (/^\/[^/].*\.(pdf|docx?|xlsx?)(\?|#|$)/i.test(href)
         || /^\/(prequalify\/application|apply\/application|apply\/co-applicant)\/?(\?|#|$)/i.test(href)) {
         a.setAttribute('href', `${origin}${href}`);
+      } else if (/^\/[^/]/.test(href)) {
+        // page paths drop leading/trailing hyphens per segment (/blog/-boat-insurance.../ is
+        // imported as /blog/boat-insurance...), so internal links must match
+        const [path, rest = ''] = href.split(/(?=[?#])/);
+        const clean = path.split('/').map((seg) => seg.replace(/^-+|-+$/g, '')).join('/');
+        if (clean !== path) a.setAttribute('href', `${clean}${rest}`);
       }
     });
   }

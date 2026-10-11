@@ -161,14 +161,17 @@ function buildBreadcrumbs(main) {
   homeLink.href = '/';
   homeLink.textContent = 'Home';
   home.append(homeLink);
-  // "Breadcrumb Parents" labels map, in order, onto the ancestor path segments
-  // (e.g. /loans/loancalculator + "Loans" -> <a href="/loans">Loans</a>)
+  // "Breadcrumb Parents": comma-separated labels, each optionally with its link,
+  // e.g. "About Us (/about)". Without a link, labels map in order onto the ancestor
+  // path segments (/loans/loancalculator + "Loans" -> <a href="/loans">Loans</a>).
   const segments = window.location.pathname.split('/').filter(Boolean);
   const parents = getMetadata('breadcrumb-parents').split(',').map((s) => s.trim()).filter(Boolean)
-    .map((label, i) => {
+    .map((entry, i) => {
+      const [, label, path] = entry.match(/^(.*?)\s*(?:\((\/[^)]*)\))?$/);
+      const href = path || (i < segments.length - 1 ? `/${segments.slice(0, i + 1).join('/')}` : '');
       const li = document.createElement('li');
-      const el = document.createElement(i < segments.length - 1 ? 'a' : 'span');
-      if (el.tagName === 'A') el.href = `/${segments.slice(0, i + 1).join('/')}`;
+      const el = document.createElement(href ? 'a' : 'span');
+      if (href) el.href = href;
       el.textContent = label;
       li.append(el);
       return li;
@@ -188,14 +191,47 @@ function buildBreadcrumbs(main) {
   target.prepend(wrapper);
 }
 
+/**
+ * blog-post template: the byline and date paragraphs under the post title become one
+ * meta line, so the photo floated after them starts below it.
+ * @param {Element} main The container element
+ */
+function buildBlogPostMeta(main) {
+  if (!document.body.classList.contains('blog-post')) return;
+  const title = main.querySelector('.section.main-content .default-content-wrapper > h2:first-child');
+  if (!title) return;
+  const lines = [];
+  let next = title.nextElementSibling;
+  while (next && next.tagName === 'P' && !next.querySelector('picture') && lines.length < 2) {
+    lines.push(next);
+    next = next.nextElementSibling;
+  }
+  if (!lines.length) return;
+  const meta = document.createElement('p');
+  meta.className = 'blog-post-meta';
+  lines.forEach((p) => {
+    const span = document.createElement('span');
+    span.append(...p.childNodes);
+    meta.append(span);
+    p.remove();
+  });
+  title.after(meta);
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
+  // email/phone links on their own line are contact details, not buttons
+  main.querySelectorAll('a.button[href^="mailto:"], a.button[href^="tel:"]').forEach((a) => {
+    a.classList.remove('button', 'primary', 'secondary');
+    a.closest('.button-container')?.classList.remove('button-container');
+  });
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
   buildBreadcrumbs(main);
+  buildBlogPostMeta(main);
   decorateBlocks(main);
 }
 

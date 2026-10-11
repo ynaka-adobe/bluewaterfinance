@@ -1,0 +1,111 @@
+/*
+ * Cards Blog: values from source #divBlogItem, a.blog-title, .blog-author, .blog-date,
+ * #divBlogImage img, #divBlogExcerpt and a.blog-btn (bluewaterfinance.com/blog/).
+ */
+.cards-blog > ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* #divBlogItem: teal-bordered card */
+.cards-blog li {
+  display: flow-root;
+  margin: 0 0 20px;
+  padding: 20px;
+  border: 2px solid rgb(104 179 192);
+  border-radius: 10px;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  line-height: 24px;
+  color: rgb(92 92 92);
+}
+
+/* a.blog-title */
+.cards-blog .cards-blog-header :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0;
+  padding: 0;
+  font-family: var(--body-font-family);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.cards-blog .cards-blog-header a:any-link {
+  color: rgb(20 74 144);
+  text-decoration: none;
+}
+
+.cards-blog .cards-blog-header a:hover {
+  text-decoration: underline;
+}
+
+/* .blog-author / .blog-date */
+.cards-blog .cards-blog-meta {
+  margin: 0;
+  font-size: 12px;
+  line-height: 24px;
+}
+
+.cards-blog .cards-blog-meta span {
+  display: inline-block;
+  margin: 0 1px 10px 0;
+  padding: 2px 5px;
+}
+
+/* #divBlogImage img: full width on phones, 300px floated left otherwise */
+.cards-blog .cards-blog-image picture {
+  display: block;
+}
+
+.cards-blog .cards-blog-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 0 16px;
+}
+
+/* #divBlogExcerpt */
+.cards-blog .cards-blog-body p {
+  margin: 0;
+}
+
+/* a.blog-btn */
+.cards-blog .cards-blog-body .cards-blog-cta {
+  margin: 16px 0 0;
+}
+
+.cards-blog .cards-blog-cta a:any-link {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 6px;
+  background-color: rgb(20 74 144);
+  font-size: 16px;
+  line-height: 24px;
+  color: rgb(255 255 255);
+  text-decoration: none;
+  white-space: normal;
+}
+
+.cards-blog .cards-blog-cta a:hover,
+.cards-blog .cards-blog-cta a:focus-visible {
+  background-color: var(--brand-navy);
+  color: rgb(255 255 255);
+}
+
+@media (width >= 600px) {
+  .cards-blog .cards-blog-image {
+    float: left;
+    width: 300px;
+    padding: 0 20px 0 0;
+  }
+
+  .cards-blog .cards-blog-image img {
+    margin: 0;
+  }
+
+  .cards-blog .cards-blog-body {
+    overflow: hidden;
+  }
+}

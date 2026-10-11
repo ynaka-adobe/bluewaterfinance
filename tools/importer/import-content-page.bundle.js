@@ -174,8 +174,106 @@ var CustomImportScript = (() => {
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/columns-cta.js
+  // tools/importer/parsers/cards-blog.js
+  function cleanText3(node) {
+    return (node ? node.textContent : "").replace(/ /g, " ").replace(/\s+/g, " ").trim();
+  }
+  function para(document2, text) {
+    const p = document2.createElement("p");
+    p.textContent = text;
+    return p;
+  }
   function parse4(element, { document: document2 }) {
+    const items = [...element.querySelectorAll(':scope > [id="divBlogItem"]')];
+    const finalItems = items.length ? items : [...element.querySelectorAll('[id="divBlogItem"]')];
+    const cells = [];
+    finalItems.forEach((item) => {
+      const titleLink = item.querySelector("a.blog-title");
+      const href = titleLink ? titleLink.getAttribute("href") : "";
+      const img = item.querySelector('[id="divBlogImage"] img');
+      const text = [];
+      if (titleLink) {
+        const h2 = document2.createElement("h2");
+        const a = document2.createElement("a");
+        a.href = href;
+        a.textContent = cleanText3(titleLink);
+        h2.append(a);
+        text.push(h2);
+      }
+      const author = cleanText3(item.querySelector(".blog-author"));
+      const date = cleanText3(item.querySelector(".blog-date"));
+      if (author) text.push(para(document2, author));
+      if (date) text.push(para(document2, date));
+      const excerptEl = item.querySelector('[id="divBlogExcerpt"]');
+      const btn = excerptEl && excerptEl.querySelector("a.blog-btn");
+      if (excerptEl) {
+        const clone = excerptEl.cloneNode(true);
+        clone.querySelectorAll("a.blog-btn").forEach((a) => a.remove());
+        const excerpt = cleanText3(clone);
+        if (excerpt) text.push(para(document2, excerpt));
+      }
+      if (btn) {
+        const p = document2.createElement("p");
+        const a = document2.createElement("a");
+        a.href = btn.getAttribute("href") || href;
+        a.textContent = cleanText3(btn);
+        p.append(a);
+        text.push(p);
+      }
+      if (!img && !text.length) return;
+      cells.push([img || "", text]);
+    });
+    if (!cells.length) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    const block = WebImporter.Blocks.createBlock(document2, { name: "cards-blog", cells });
+    element.replaceChildren(block);
+  }
+
+  // tools/importer/parsers/form.js
+  var FORM_JSON = {
+    "/contact/": "contact-form.json"
+  };
+  function cleanText4(node) {
+    return (node ? node.textContent : "").replace(/ /g, " ").replace(/\s+/g, " ").trim();
+  }
+  function parse5(element, { document: document2 }) {
+    var _a;
+    let path = "/contact/";
+    try {
+      path = new URL(((_a = document2.querySelector('link[rel="canonical"]')) == null ? void 0 : _a.href) || document2.location.href).pathname.toLowerCase();
+    } catch (e) {
+    }
+    const jsonName = FORM_JSON[path] || FORM_JSON["/contact/"];
+    const rows = [...element.querySelectorAll("tr")];
+    const textRows = [];
+    for (const tr of rows) {
+      if (tr.querySelector("input, textarea, select")) break;
+      const text = cleanText4(tr);
+      if (text) textRows.push(text);
+    }
+    const before = [];
+    if (textRows[0]) {
+      const h2 = document2.createElement("h2");
+      h2.textContent = textRows[0];
+      before.push(h2);
+    }
+    textRows.slice(1).forEach((text) => {
+      const p = document2.createElement("p");
+      p.textContent = text;
+      before.push(p);
+    });
+    const link = document2.createElement("a");
+    link.href = jsonName;
+    link.textContent = jsonName;
+    const block = WebImporter.Blocks.createBlock(document2, { name: "Form", cells: [[link]] });
+    element.before(...before);
+    element.replaceWith(block);
+  }
+
+  // tools/importer/parsers/columns-cta.js
+  function parse6(element, { document: document2 }) {
     let buttons = Array.from(element.querySelectorAll(".homeButton"));
     if (!buttons.length) {
       buttons = Array.from(element.querySelectorAll(":scope > div.columns"));
@@ -219,7 +317,7 @@ var CustomImportScript = (() => {
   }
 
   // tools/importer/parsers/columns-logos.js
-  function parse5(element, { document: document2 }) {
+  function parse7(element, { document: document2 }) {
     let wrappers = Array.from(element.querySelectorAll(":scope > .containLogo"));
     if (!wrappers.length) wrappers = Array.from(element.querySelectorAll("img")).map((img) => img.closest("a") || img);
     const row = [];
@@ -264,10 +362,15 @@ var CustomImportScript = (() => {
         "input#__EVENTARGUMENT"
       ]);
       WebImporter.DOMUtils.remove(element, [".cycle-slideshow > a.cycle-sentinel"]);
-      const crumbs = [...element.querySelectorAll(".tunNavContain a")].map((a) => a.textContent.replace(/\s+/g, " ").trim());
+      const crumbLinks = [...element.querySelectorAll(".tunNavContain a")];
+      const crumbs = crumbLinks.map((a) => a.textContent.replace(/\s+/g, " ").trim());
       const crumbLabel = crumbs.length > 1 ? crumbs[crumbs.length - 1] : "";
       if (crumbLabel) element.setAttribute("data-excat-breadcrumb-title", crumbLabel);
-      const crumbParents = crumbs.slice(1, -1).filter(Boolean).join(", ");
+      const crumbParents = crumbLinks.slice(1, -1).map((a, i) => {
+        const label = crumbs[i + 1];
+        const href = (a.getAttribute("href") || "").toLowerCase().replace(/\/+$/, "");
+        return href.startsWith("/") ? `${label} (${href})` : label;
+      }).filter(Boolean).join(", ");
       if (crumbParents) element.setAttribute("data-excat-breadcrumb-parents", crumbParents);
       WebImporter.DOMUtils.remove(element, [".tunNavContain"]);
       element.querySelectorAll('a[id^="close"][id$="Button"]').forEach((a) => {
@@ -329,6 +432,10 @@ var CustomImportScript = (() => {
         const href = a.getAttribute("href");
         if (/^\/[^/].*\.(pdf|docx?|xlsx?)(\?|#|$)/i.test(href) || /^\/(prequalify\/application|apply\/application|apply\/co-applicant)\/?(\?|#|$)/i.test(href)) {
           a.setAttribute("href", `${origin}${href}`);
+        } else if (/^\/[^/]/.test(href)) {
+          const [path, rest = ""] = href.split(/(?=[?#])/);
+          const clean = path.split("/").map((seg) => seg.replace(/^-+|-+$/g, "")).join("/");
+          if (clean !== path) a.setAttribute("href", `${clean}${rest}`);
         }
       });
     }
@@ -394,6 +501,7 @@ var CustomImportScript = (() => {
     });
   }
   function transform3(hookName, element, payload) {
+    var _a;
     if (!isContentPage(payload)) return;
     const doc = element.ownerDocument;
     if (hookName === TransformHook2.beforeTransform) {
@@ -418,6 +526,11 @@ var CustomImportScript = (() => {
       meta.Breadcrumbs = "true";
       if (crumbTitle) meta["Breadcrumb Title"] = crumbTitle;
       if (crumbParents) meta["Breadcrumb Parents"] = crumbParents;
+      try {
+        const { pathname } = new URL(((_a = payload.params) == null ? void 0 : _a.originalURL) || payload.url);
+        if (/^\/blog\/[^/]+\/?$/i.test(pathname)) meta.Template = "blog-post";
+      } catch (e) {
+      }
       element.append(WebImporter.Blocks.getMetadataBlock(doc, meta));
     }
   }
@@ -427,8 +540,10 @@ var CustomImportScript = (() => {
     "hero-caption": parse,
     "accordion-boxed": parse2,
     "loan-calculator": parse3,
-    "columns-cta": parse4,
-    "columns-logos": parse5
+    "cards-blog": parse4,
+    form: parse5,
+    "columns-cta": parse6,
+    "columns-logos": parse7
   };
   var PAGE_TEMPLATE = {
     "name": "content-page",
@@ -440,7 +555,14 @@ var CustomImportScript = (() => {
       "https://bluewaterfinance.com/prequalify/",
       "https://bluewaterfinance.com/apply/",
       "https://bluewaterfinance.com/dealer-tools/",
-      "https://bluewaterfinance.com/loans/LoanCalculator/"
+      "https://bluewaterfinance.com/loans/LoanCalculator/",
+      "https://bluewaterfinance.com/about/",
+      "https://bluewaterfinance.com/contact/",
+      "https://bluewaterfinance.com/blog/",
+      "https://bluewaterfinance.com/blog/helping-your-customers-navigate-boat-titling-a-guide-for-marine-dealers/",
+      "https://bluewaterfinance.com/blog/-boat-insurance-why-offer-it-at-the-dealership/",
+      "https://bluewaterfinance.com/blog/unlocking-success-the-benefits-of-a-diverse-lender-portfolio/",
+      "https://bluewaterfinance.com/blog/maximize-success-during-boat-show-season/"
     ],
     "blocks": [
       {
@@ -459,6 +581,18 @@ var CustomImportScript = (() => {
         "name": "loan-calculator",
         "instances": [
           "#pnlContent > .wysiwyg:has(#rblType)"
+        ]
+      },
+      {
+        "name": "cards-blog",
+        "instances": [
+          "#pnlContent:has(> #divBlogItem)"
+        ]
+      },
+      {
+        "name": "form",
+        "instances": [
+          "#pnlContent table.surveyTable"
         ]
       },
       {
@@ -496,7 +630,9 @@ var CustomImportScript = (() => {
         "style": "main-content",
         "blocks": [
           "accordion-boxed",
-          "loan-calculator"
+          "loan-calculator",
+          "cards-blog",
+          "form"
         ],
         "defaultContent": [
           "#pnlContent > .wysiwyg p",
