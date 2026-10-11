@@ -46,6 +46,8 @@ export default function transform(hookName, element, payload) {
     // short crumb label captured by the cleanup transformer before the trail was removed
     const crumbTitle = element.getAttribute('data-excat-breadcrumb-title');
     element.removeAttribute('data-excat-breadcrumb-title');
+    const crumbParents = element.getAttribute('data-excat-breadcrumb-parents');
+    element.removeAttribute('data-excat-breadcrumb-parents');
     if (hasMetadataBlock(element)) return;
 
     const meta = WebImporter.Blocks.getMetadata(doc) || {};
@@ -57,6 +59,7 @@ export default function transform(hookName, element, payload) {
     }
     meta.Breadcrumbs = 'true';
     if (crumbTitle) meta['Breadcrumb Title'] = crumbTitle;
+    if (crumbParents) meta['Breadcrumb Parents'] = crumbParents;
 
     element.append(WebImporter.Blocks.getMetadataBlock(doc, meta));
   }

@@ -1,0 +1,25 @@
+{
+  "variantName": "loan-calculator",
+  "baseBlock": "loan-calculator",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "comfortable",
+    "purpose": "interactive-calculator",
+    "imagePattern": "none",
+    "summary": "Centred Monthly Payment / Loan Amount text tabs (navy + orange underline when active) over two rounded light-grey panels: inputs (amount, rate, term pills) and results. Small disclaimer below. H2 heading is default content above the block."
+  },
+  "contentPattern": {
+    "structure": "key | value config rows (labels, terms list, disclaimer)",
+    "rows": "9 rows on /loans/loancalculator",
+    "buttonCount": 0,
+    "imageCount": 0
+  },
+  "usage": {
+    "pagesUsing": ["/loans/loancalculator"],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-11T00:00:00.000Z"
+  },
+  "options": [],
+  "memberVariantIds": ["loan-calculator"]
+}

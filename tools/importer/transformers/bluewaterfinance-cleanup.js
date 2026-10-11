@@ -42,10 +42,14 @@ export default function transform(hookName, element, payload) {
     // (Home » Product Protection). Breadcrumbs are generated from page metadata instead.
     // The visual rule under it is a CSS border; there is no <hr> element in the markup.
     // Keep the current page's crumb label (e.g. "Product Protection") for the metadata
-    // transformer, which writes it as "Breadcrumb Title".
-    const crumbs = element.querySelectorAll('.tunNavContain a');
-    const crumbLabel = crumbs.length > 1 ? crumbs[crumbs.length - 1].textContent.trim() : '';
+    // transformer, which writes it as "Breadcrumb Title". Intermediate crumbs on nested pages
+    // (Home » Loans » Loan Calculator) are kept as "Breadcrumb Parents".
+    const crumbs = [...element.querySelectorAll('.tunNavContain a')]
+      .map((a) => a.textContent.replace(/\s+/g, ' ').trim());
+    const crumbLabel = crumbs.length > 1 ? crumbs[crumbs.length - 1] : '';
     if (crumbLabel) element.setAttribute('data-excat-breadcrumb-title', crumbLabel);
+    const crumbParents = crumbs.slice(1, -1).filter(Boolean).join(', ');
+    if (crumbParents) element.setAttribute('data-excat-breadcrumb-parents', crumbParents);
     WebImporter.DOMUtils.remove(element, ['.tunNavContain']);
 
     // Accordion "close" duplicate toggles (/protection/): <a id="closeEngButton">, <a id="closeAccButton">

@@ -4,6 +4,7 @@
 // PARSER IMPORTS
 import heroCaptionParser from './parsers/hero-caption.js';
 import accordionBoxedParser from './parsers/accordion-boxed.js';
+import loanCalculatorParser from './parsers/loan-calculator.js';
 import columnsCtaParser from './parsers/columns-cta.js';
 import columnsLogosParser from './parsers/columns-logos.js';
 
@@ -16,6 +17,7 @@ import metadataTransformer from './transformers/bluewaterfinance-metadata.js';
 const parsers = {
   'hero-caption': heroCaptionParser,
   'accordion-boxed': accordionBoxedParser,
+  'loan-calculator': loanCalculatorParser,
   'columns-cta': columnsCtaParser,
   'columns-logos': columnsLogosParser,
 };
@@ -30,7 +32,8 @@ const PAGE_TEMPLATE = {
     "https://bluewaterfinance.com/insurance/",
     "https://bluewaterfinance.com/prequalify/",
     "https://bluewaterfinance.com/apply/",
-    "https://bluewaterfinance.com/dealer-tools/"
+    "https://bluewaterfinance.com/dealer-tools/",
+    "https://bluewaterfinance.com/loans/LoanCalculator/"
   ],
   "blocks": [
     {
@@ -43,6 +46,12 @@ const PAGE_TEMPLATE = {
       "name": "accordion-boxed",
       "instances": [
         "#pnlContent > .wysiwyg:has(.accordionPP)"
+      ]
+    },
+    {
+      "name": "loan-calculator",
+      "instances": [
+        "#pnlContent > .wysiwyg:has(#rblType)"
       ]
     },
     {
@@ -79,7 +88,8 @@ const PAGE_TEMPLATE = {
       ],
       "style": "main-content",
       "blocks": [
-        "accordion-boxed"
+        "accordion-boxed",
+        "loan-calculator"
       ],
       "defaultContent": [
         "#pnlContent > .wysiwyg p",

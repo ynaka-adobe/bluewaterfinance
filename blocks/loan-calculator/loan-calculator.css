@@ -1,0 +1,216 @@
+/*
+ * Loan Calculator: values from source #rblType, #form-container, #results-container,
+ * .sds-input-container, #rblMonths and .footnote (bluewaterfinance.com/loans/LoanCalculator/).
+ */
+.loan-calculator {
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgb(92 92 92);
+}
+
+/* source h2 above the calculator is a plain heading (no .wysiwyg-title padding) */
+main .default-content-wrapper:has(+ .loan-calculator-wrapper) > h2:last-child {
+  padding: 0;
+}
+
+/* radios stay focusable for keyboard users; labels are the visible controls */
+.loan-calculator input[type='radio'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+}
+
+/* #rblType: centred text tabs, active one navy with an orange underline */
+.loan-calculator .loan-calculator-modes {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 16px;
+}
+
+.loan-calculator .loan-calculator-mode {
+  position: relative;
+  padding: 10px 12px;
+}
+
+.loan-calculator .loan-calculator-mode label {
+  margin: 0 16px 0 8px;
+  font-size: 28px;
+  line-height: 1.8;
+  color: rgb(160 160 160);
+  cursor: pointer;
+  transition: color 0.25s ease-in-out;
+}
+
+/* #form-container / #results-container */
+.loan-calculator .loan-calculator-panels {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 32px;
+}
+
+.loan-calculator .loan-calculator-panel {
+  box-sizing: border-box;
+  min-height: 350px;
+  margin: 0 0 32px;
+  padding: 16px;
+  border: 1px solid rgb(160 160 160);
+  border-radius: 16px;
+  background-color: rgb(247 247 247);
+}
+
+.loan-calculator .loan-calculator-panel h3 {
+  margin: 18.72px 0 8px;
+  padding: 0 0 16px;
+  font-family: var(--heading-font-family);
+  font-size: 18.72px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--brand-navy);
+}
+
+/* .sds-input-container: white box, small label on top, orange border on hover/focus */
+.loan-calculator .loan-calculator-field {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 503px;
+  height: 60px;
+  margin: 0 0 16px;
+  overflow: hidden;
+  border: 1px solid rgb(189 189 189);
+  border-radius: 6px;
+  background-color: rgb(255 255 255);
+  transition: border-color 0.25s ease-in-out;
+}
+
+.loan-calculator .loan-calculator-field:hover,
+.loan-calculator .loan-calculator-field:focus-within {
+  border-color: var(--brand-orange);
+}
+
+.loan-calculator .loan-calculator-field > label,
+.loan-calculator .loan-calculator-label {
+  display: block;
+  padding: 2px 0 0 8px;
+  font-size: 12px;
+  line-height: 1.8;
+  color: rgb(10 10 10);
+}
+
+.loan-calculator .loan-calculator-field input[type='text'] {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 32px;
+  margin: -4px 0 0;
+  padding: 0 16px 0 26px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font: inherit;
+  color: rgb(10 10 10);
+}
+
+.loan-calculator .loan-calculator-currency::before,
+.loan-calculator .loan-calculator-percent::after {
+  position: absolute;
+  bottom: 6px;
+  pointer-events: none;
+}
+
+.loan-calculator .loan-calculator-currency::before {
+  content: '$';
+  left: 15px;
+}
+
+.loan-calculator .loan-calculator-percent::after {
+  content: '%';
+  left: 68px;
+}
+
+.loan-calculator .loan-calculator-percent input[type='text'] {
+  width: 85px;
+}
+
+/* #rblMonths: term pills, spaced like the source (~24px) on desktop; tightens so all
+   terms stay visible on phones (the source clips the last one there) */
+.loan-calculator .loan-calculator-terms {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  max-width: 316px;
+  padding: 0 4px 0 clamp(9px, 4%, 17px);
+}
+
+.loan-calculator .loan-calculator-terms label {
+  margin: 0;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  font-size: 14.4px;
+  line-height: 1.8;
+  color: rgb(160 160 160);
+  cursor: pointer;
+  transition: 0.25s ease-in-out;
+}
+
+/* results: label + read-only grey box */
+.loan-calculator .loan-calculator-results > label {
+  display: block;
+  font-size: 16px;
+  line-height: 1.8;
+  color: rgb(10 10 10);
+}
+
+.loan-calculator .loan-calculator-results output {
+  display: block;
+  box-sizing: border-box;
+  height: 39px;
+  margin: 0 0 16px;
+  padding: 8px;
+  border: 1px solid rgb(202 202 202);
+  background-color: rgb(230 230 230);
+  line-height: 21px;
+  color: rgb(10 10 10);
+}
+
+/* .footnote */
+.loan-calculator .loan-calculator-disclaimer {
+  font-size: 10.4px;
+  line-height: 13px;
+}
+
+.loan-calculator .loan-calculator-disclaimer p {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* selected / focus states (after the base rules they override) */
+.loan-calculator .loan-calculator-field input[type='text']:focus {
+  outline: none;
+}
+
+.loan-calculator .loan-calculator-mode input:checked + label {
+  color: var(--brand-navy);
+  text-decoration: underline;
+  text-decoration-color: var(--brand-orange);
+}
+
+.loan-calculator .loan-calculator-terms input:checked + label {
+  border-color: rgb(204 204 204);
+  background-color: rgb(241 241 241);
+  color: var(--brand-navy);
+}
+
+.loan-calculator input[type='radio']:focus-visible + label {
+  outline: 2px solid var(--brand-navy);
+  outline-offset: 2px;
+}
+
+@media (width >= 600px) {
+  .loan-calculator .loan-calculator-panels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

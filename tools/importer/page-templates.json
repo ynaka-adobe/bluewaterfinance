@@ -118,7 +118,8 @@
         "https://bluewaterfinance.com/insurance/",
         "https://bluewaterfinance.com/prequalify/",
         "https://bluewaterfinance.com/apply/",
-        "https://bluewaterfinance.com/dealer-tools/"
+        "https://bluewaterfinance.com/dealer-tools/",
+        "https://bluewaterfinance.com/loans/LoanCalculator/"
       ],
       "representativeUrl": "https://bluewaterfinance.com/protection/",
       "description": "Inner content page: hero banner with caption, breadcrumb, main copy + sidebar (sub-nav, CTA tiles), boat line-up image, partner logos",
@@ -134,6 +135,12 @@
           "name": "accordion-boxed",
           "instances": [
             "#pnlContent > .wysiwyg:has(.accordionPP)"
+          ]
+        },
+        {
+          "name": "loan-calculator",
+          "instances": [
+            "#pnlContent > .wysiwyg:has(#rblType)"
           ]
         },
         {
@@ -170,7 +177,8 @@
           ],
           "style": "main-content",
           "blocks": [
-            "accordion-boxed"
+            "accordion-boxed",
+            "loan-calculator"
           ],
           "defaultContent": [
             "#pnlContent > .wysiwyg p",

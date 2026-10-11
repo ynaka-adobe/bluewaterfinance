@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "url": "https://bluewaterfinance.com/loans/LoanCalculator/",
+  "path": "loans/loancalculator",
+  "timestamp": "2026-10-11T05:43:05.271Z",
+  "title": "Calculate Loan Payments And Amounts | Blue Water Finance",
+  "template": "content-page",
+  "blocks": [
+    "hero-caption",
+    "loan-calculator",
+    "columns-cta",
+    "columns-logos"
+  ]
+}

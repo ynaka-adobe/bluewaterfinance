@@ -161,13 +161,25 @@ function buildBreadcrumbs(main) {
   homeLink.href = '/';
   homeLink.textContent = 'Home';
   home.append(homeLink);
+  // "Breadcrumb Parents" labels map, in order, onto the ancestor path segments
+  // (e.g. /loans/loancalculator + "Loans" -> <a href="/loans">Loans</a>)
+  const segments = window.location.pathname.split('/').filter(Boolean);
+  const parents = getMetadata('breadcrumb-parents').split(',').map((s) => s.trim()).filter(Boolean)
+    .map((label, i) => {
+      const li = document.createElement('li');
+      const el = document.createElement(i < segments.length - 1 ? 'a' : 'span');
+      if (el.tagName === 'A') el.href = `/${segments.slice(0, i + 1).join('/')}`;
+      el.textContent = label;
+      li.append(el);
+      return li;
+    });
   const current = document.createElement('li');
   const currentLink = document.createElement('a');
   currentLink.href = window.location.pathname;
   currentLink.setAttribute('aria-current', 'page');
   currentLink.textContent = title;
   current.append(currentLink);
-  ol.append(home, current);
+  ol.append(home, ...parents, current);
   nav.append(ol);
 
   const wrapper = document.createElement('div');

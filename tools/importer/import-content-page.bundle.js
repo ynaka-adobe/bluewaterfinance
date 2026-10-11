@@ -137,8 +137,45 @@ var CustomImportScript = (() => {
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/columns-cta.js
+  // tools/importer/parsers/loan-calculator.js
+  function cleanText2(node) {
+    return (node ? node.textContent : "").replace(/ /g, " ").replace(/\s+/g, " ").trim().replace(/:$/, "").trim();
+  }
   function parse3(element, { document: document2 }) {
+    const srcHeading = element.querySelector("h2");
+    let heading = null;
+    if (srcHeading && cleanText2(srcHeading)) {
+      heading = document2.createElement("h2");
+      heading.textContent = cleanText2(srcHeading);
+    }
+    const tabs = [...element.querySelectorAll("#rblType label")].map(cleanText2);
+    const terms = [...element.querySelectorAll('#rblMonths input[type="radio"]')].map((input) => input.value).filter(Boolean);
+    const footnote = element.parentElement && element.parentElement.querySelector(".footnote");
+    const disclaimer = cleanText2(footnote);
+    if (footnote) {
+      const holder = footnote.closest(".wysiwyg");
+      if (holder && holder !== element && cleanText2(holder) === disclaimer) holder.remove();
+      else footnote.remove();
+    }
+    const rows = [
+      ["Payment Tab", tabs[0] || "Monthly Payment"],
+      ["Payment Heading", cleanText2(element.querySelector("#lblFormHead")) || "Let's Calculate Your Monthly Payment"],
+      ["Amount Tab", tabs[1] || "Loan Amount"],
+      // only present in the source's inline script
+      ["Amount Heading", "Let's Calculate Your Loan Amount"],
+      ["Rate Label", cleanText2(element.querySelector("#lblInterest")) || "Interest Rate"],
+      ["Term Label", cleanText2(element.querySelector("#lblYears")) || "Length of loan (in months)"],
+      ["Terms", (terms.length ? terms : ["84", "120", "144", "180", "240"]).join(", ")],
+      ["Results Heading", cleanText2(element.querySelector("#results-container h3")) || "Results"]
+    ];
+    if (disclaimer) rows.push(["Disclaimer", disclaimer]);
+    const block = WebImporter.Blocks.createBlock(document2, { name: "loan-calculator", cells: rows });
+    if (heading) element.before(heading);
+    element.replaceWith(block);
+  }
+
+  // tools/importer/parsers/columns-cta.js
+  function parse4(element, { document: document2 }) {
     let buttons = Array.from(element.querySelectorAll(".homeButton"));
     if (!buttons.length) {
       buttons = Array.from(element.querySelectorAll(":scope > div.columns"));
@@ -182,7 +219,7 @@ var CustomImportScript = (() => {
   }
 
   // tools/importer/parsers/columns-logos.js
-  function parse4(element, { document: document2 }) {
+  function parse5(element, { document: document2 }) {
     let wrappers = Array.from(element.querySelectorAll(":scope > .containLogo"));
     if (!wrappers.length) wrappers = Array.from(element.querySelectorAll("img")).map((img) => img.closest("a") || img);
     const row = [];
@@ -227,9 +264,11 @@ var CustomImportScript = (() => {
         "input#__EVENTARGUMENT"
       ]);
       WebImporter.DOMUtils.remove(element, [".cycle-slideshow > a.cycle-sentinel"]);
-      const crumbs = element.querySelectorAll(".tunNavContain a");
-      const crumbLabel = crumbs.length > 1 ? crumbs[crumbs.length - 1].textContent.trim() : "";
+      const crumbs = [...element.querySelectorAll(".tunNavContain a")].map((a) => a.textContent.replace(/\s+/g, " ").trim());
+      const crumbLabel = crumbs.length > 1 ? crumbs[crumbs.length - 1] : "";
       if (crumbLabel) element.setAttribute("data-excat-breadcrumb-title", crumbLabel);
+      const crumbParents = crumbs.slice(1, -1).filter(Boolean).join(", ");
+      if (crumbParents) element.setAttribute("data-excat-breadcrumb-parents", crumbParents);
       WebImporter.DOMUtils.remove(element, [".tunNavContain"]);
       element.querySelectorAll('a[id^="close"][id$="Button"]').forEach((a) => {
         const openId = a.id.replace(/^close/, "open");
@@ -367,6 +406,8 @@ var CustomImportScript = (() => {
       element.removeAttribute(HERO_SRC_ATTR);
       const crumbTitle = element.getAttribute("data-excat-breadcrumb-title");
       element.removeAttribute("data-excat-breadcrumb-title");
+      const crumbParents = element.getAttribute("data-excat-breadcrumb-parents");
+      element.removeAttribute("data-excat-breadcrumb-parents");
       if (hasMetadataBlock(element)) return;
       const meta = WebImporter.Blocks.getMetadata(doc) || {};
       if (heroSrc) {
@@ -376,6 +417,7 @@ var CustomImportScript = (() => {
       }
       meta.Breadcrumbs = "true";
       if (crumbTitle) meta["Breadcrumb Title"] = crumbTitle;
+      if (crumbParents) meta["Breadcrumb Parents"] = crumbParents;
       element.append(WebImporter.Blocks.getMetadataBlock(doc, meta));
     }
   }
@@ -384,8 +426,9 @@ var CustomImportScript = (() => {
   var parsers = {
     "hero-caption": parse,
     "accordion-boxed": parse2,
-    "columns-cta": parse3,
-    "columns-logos": parse4
+    "loan-calculator": parse3,
+    "columns-cta": parse4,
+    "columns-logos": parse5
   };
   var PAGE_TEMPLATE = {
     "name": "content-page",
@@ -396,7 +439,8 @@ var CustomImportScript = (() => {
       "https://bluewaterfinance.com/insurance/",
       "https://bluewaterfinance.com/prequalify/",
       "https://bluewaterfinance.com/apply/",
-      "https://bluewaterfinance.com/dealer-tools/"
+      "https://bluewaterfinance.com/dealer-tools/",
+      "https://bluewaterfinance.com/loans/LoanCalculator/"
     ],
     "blocks": [
       {
@@ -409,6 +453,12 @@ var CustomImportScript = (() => {
         "name": "accordion-boxed",
         "instances": [
           "#pnlContent > .wysiwyg:has(.accordionPP)"
+        ]
+      },
+      {
+        "name": "loan-calculator",
+        "instances": [
+          "#pnlContent > .wysiwyg:has(#rblType)"
         ]
       },
       {
@@ -445,7 +495,8 @@ var CustomImportScript = (() => {
         ],
         "style": "main-content",
         "blocks": [
-          "accordion-boxed"
+          "accordion-boxed",
+          "loan-calculator"
         ],
         "defaultContent": [
           "#pnlContent > .wysiwyg p",
