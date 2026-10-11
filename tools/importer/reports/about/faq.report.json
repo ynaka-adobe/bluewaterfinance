@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bluewaterfinance.com/about/faq/",
+  "path": "about/faq",
+  "timestamp": "2026-10-11T15:47:32.604Z",
+  "title": "Frequently Asked Questions | Blue Water Finance",
+  "template": "content-page",
+  "blocks": [
+    "hero-caption",
+    "columns-cta",
+    "columns-logos"
+  ]
+}

@@ -453,7 +453,7 @@ main .breadcrumbs li + li::before {
 }
 
 main .breadcrumbs-wrapper .breadcrumbs a:any-link {
-  color: rgb(157 162 168);
+  color: rgb(107 112 120); /* source #9DA2A8 darkened to 4.9:1 on white (WCAG AA) */
   text-decoration: none;
 }
 

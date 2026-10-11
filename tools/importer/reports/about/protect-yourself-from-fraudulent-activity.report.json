@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bluewaterfinance.com/about/protect-yourself-from-fraudulent-activity/",
+  "path": "about/protect-yourself-from-fraudulent-activity",
+  "timestamp": "2026-10-11T15:47:37.903Z",
+  "title": "Protect Yourself From Fraudulent Activity | Blue Water Finance",
+  "template": "content-page",
+  "blocks": [
+    "hero-caption",
+    "columns-cta",
+    "columns-logos"
+  ]
+}

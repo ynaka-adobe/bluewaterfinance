@@ -44,7 +44,10 @@ const PAGE_TEMPLATE = {
     "https://bluewaterfinance.com/blog/helping-your-customers-navigate-boat-titling-a-guide-for-marine-dealers/",
     "https://bluewaterfinance.com/blog/-boat-insurance-why-offer-it-at-the-dealership/",
     "https://bluewaterfinance.com/blog/unlocking-success-the-benefits-of-a-diverse-lender-portfolio/",
-    "https://bluewaterfinance.com/blog/maximize-success-during-boat-show-season/"
+    "https://bluewaterfinance.com/blog/maximize-success-during-boat-show-season/",
+    "https://bluewaterfinance.com/about/testimonials/",
+    "https://bluewaterfinance.com/about/faq/",
+    "https://bluewaterfinance.com/about/protect-yourself-from-fraudulent-activity/"
   ],
   "blocks": [
     {

@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bluewaterfinance.com/about/testimonials/",
+  "path": "about/testimonials",
+  "timestamp": "2026-10-11T15:47:26.920Z",
+  "title": "Testimonials | Blue Water Finance",
+  "template": "content-page",
+  "blocks": [
+    "hero-caption",
+    "columns-cta",
+    "columns-logos"
+  ]
+}

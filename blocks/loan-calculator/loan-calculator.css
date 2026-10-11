@@ -177,8 +177,8 @@ main .default-content-wrapper:has(+ .loan-calculator-wrapper) > h2:last-child {
 
 /* .footnote */
 .loan-calculator .loan-calculator-disclaimer {
-  font-size: 10.4px;
-  line-height: 13px;
+  font-size: 12px; /* source 10.4px; 12px is the legibility minimum */
+  line-height: 15px;
 }
 
 .loan-calculator .loan-calculator-disclaimer p {

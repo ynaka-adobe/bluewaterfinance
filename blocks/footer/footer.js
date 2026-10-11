@@ -2,13 +2,16 @@
 const BACK_TO_TOP_OFFSET = 400;
 
 /**
- * Fetches the footer fragment (metadata-independent dual fetch):
- * /content first (local preview), then the site root (DA/EDS production).
+ * Fetches the footer fragment (metadata-independent dual fetch): the site root (DA/EDS)
+ * and /content (local preview), trying the one for the current host first so
+ * production pages don't log a 404 for the other.
  * @returns {Promise<HTMLElement|null>}
  */
 async function fetchFooter() {
-  let resp = await fetch('/content/footer.plain.html');
-  if (!resp.ok) resp = await fetch('/footer.plain.html');
+  const paths = ['/footer.plain.html', '/content/footer.plain.html'];
+  if (window.location.hostname === 'localhost') paths.reverse();
+  let resp = await fetch(paths[0]);
+  if (!resp.ok) resp = await fetch(paths[1]);
   if (!resp.ok) return null;
   const wrapper = document.createElement('div');
   wrapper.innerHTML = await resp.text();

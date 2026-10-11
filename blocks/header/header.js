@@ -5,13 +5,16 @@ const isDesktop = window.matchMedia('(width >= 1200px)');
 const SECTION_ROLES = ['alert', 'brand', 'tools', 'sections', 'mobile'];
 
 /**
- * Fetches the nav fragment (metadata-independent dual fetch):
- * /content first (local preview), then the site root (DA/EDS production).
+ * Fetches the nav fragment (metadata-independent dual fetch): the site root (DA/EDS)
+ * and /content (local preview), trying the one for the current host first so
+ * production pages don't log a 404 for the other.
  * @returns {Promise<HTMLElement|null>}
  */
 async function fetchNav() {
-  let resp = await fetch('/content/nav.plain.html');
-  if (!resp.ok) resp = await fetch('/nav.plain.html');
+  const paths = ['/nav.plain.html', '/content/nav.plain.html'];
+  if (window.location.hostname === 'localhost') paths.reverse();
+  let resp = await fetch(paths[0]);
+  if (!resp.ok) resp = await fetch(paths[1]);
   if (!resp.ok) return null;
   const html = await resp.text();
   const wrapper = document.createElement('div');
