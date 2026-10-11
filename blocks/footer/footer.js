@@ -20,12 +20,23 @@ async function fetchFooter() {
 }
 
 /**
+ * True for svg images, including optimized media URLs (media_….svg?…).
+ * @param {HTMLImageElement} img
+ * @returns {boolean}
+ */
+function isSvg(img) {
+  const url = new URL(img.src, window.location.href);
+  return url.pathname.endsWith('.svg') || url.searchParams.get('format') === 'svg';
+}
+
+/**
  * Replaces svg icon images inside links with masked spans that follow the
  * link color; the image alt becomes screen-reader text.
  * @param {Element} root
  */
 function decorateIcons(root) {
-  root.querySelectorAll('a img[src$=".svg"]').forEach((img) => {
+  root.querySelectorAll('a img').forEach((img) => {
+    if (!isSvg(img)) return;
     const icon = document.createElement('span');
     icon.className = 'footer-icon';
     icon.style.setProperty('--icon-url', `url("${img.src}")`);
@@ -44,13 +55,16 @@ function decorateIcons(root) {
 }
 
 /**
- * A section whose only link points to "#" is the back-to-top control.
+ * A section whose only link points to "#" is the back-to-top control
+ * (authoring tools may store that link with an empty href).
  * @param {Element} section
  * @returns {boolean}
  */
 function isBackToTop(section) {
   const links = section.querySelectorAll('a');
-  return links.length === 1 && links[0].getAttribute('href') === '#';
+  if (links.length !== 1 || section.textContent.trim()) return false;
+  const href = links[0].getAttribute('href');
+  return !href || href.startsWith('#');
 }
 
 /**

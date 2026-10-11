@@ -25,12 +25,23 @@ async function fetchNav() {
 }
 
 /**
+ * True for svg images, including optimized media URLs (media_….svg?…).
+ * @param {HTMLImageElement} img
+ * @returns {boolean}
+ */
+function isSvg(img) {
+  const url = new URL(img.src, window.location.href);
+  return url.pathname.endsWith('.svg') || url.searchParams.get('format') === 'svg';
+}
+
+/**
  * Replaces svg icon images with masked spans so they follow the link color
  * (needed for hover color changes).
  * @param {Element} root
  */
 function decorateIcons(root) {
-  root.querySelectorAll('a img[src$=".svg"]').forEach((img) => {
+  root.querySelectorAll('a img').forEach((img) => {
+    if (!isSvg(img)) return;
     const icon = document.createElement('span');
     icon.className = 'nav-icon';
     icon.style.setProperty('--icon-url', `url("${img.src}")`);
