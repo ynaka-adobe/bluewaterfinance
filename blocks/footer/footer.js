@@ -55,16 +55,15 @@ function decorateIcons(root) {
 }
 
 /**
- * A section whose only link points to "#" is the back-to-top control
- * (authoring tools may store that link with an empty href).
+ * A section holding nothing but one image-only link is the back-to-top
+ * control. Matched by structure, not href: authoring and publishing rewrite
+ * the "#" link (to "" or "/").
  * @param {Element} section
  * @returns {boolean}
  */
 function isBackToTop(section) {
   const links = section.querySelectorAll('a');
-  if (links.length !== 1 || section.textContent.trim()) return false;
-  const href = links[0].getAttribute('href');
-  return !href || href.startsWith('#');
+  return links.length === 1 && !section.textContent.trim() && !!links[0].querySelector('img');
 }
 
 /**
