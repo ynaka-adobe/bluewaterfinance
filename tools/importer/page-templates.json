@@ -109,6 +109,114 @@
           ]
         }
       ]
+    },
+    {
+      "name": "content-page",
+      "urls": [
+        "https://bluewaterfinance.com/loans/",
+        "https://bluewaterfinance.com/protection/",
+        "https://bluewaterfinance.com/insurance/"
+      ],
+      "representativeUrl": "https://bluewaterfinance.com/protection/",
+      "description": "Inner content page: hero banner with caption, breadcrumb, main copy + sidebar (sub-nav, CTA tiles), boat line-up image, partner logos",
+      "urlPattern": "/*/",
+      "blocks": [
+        {
+          "name": "hero-caption",
+          "instances": [
+            "#pnlSubPageImage"
+          ]
+        },
+        {
+          "name": "accordion-boxed",
+          "instances": [
+            "#pnlContent > .wysiwyg:has(.accordionPP)"
+          ]
+        },
+        {
+          "name": "columns-cta",
+          "instances": [
+            ".mainContent > .row > .medium-3.columns center"
+          ]
+        },
+        {
+          "name": "columns-logos",
+          "instances": [
+            ".theLogos"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "1",
+          "name": "hero",
+          "selector": [
+            "#pnlSubPageImage"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-caption"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "2",
+          "name": "main-content",
+          "selector": [
+            ".mainContent > .row > .pageContent"
+          ],
+          "style": "main-content",
+          "blocks": [
+            "accordion-boxed"
+          ],
+          "defaultContent": [
+            "#pnlContent > .wysiwyg p",
+            "#pnlContent > .wysiwyg h2",
+            "#pnlContent > .wysiwyg ul"
+          ]
+        },
+        {
+          "id": "3",
+          "name": "sidebar",
+          "selector": [
+            ".mainContent > .row > .medium-3.columns"
+          ],
+          "style": "sidebar",
+          "blocks": [
+            "columns-cta"
+          ],
+          "defaultContent": [
+            "#nav-wrap ul.sublist"
+          ]
+        },
+        {
+          "id": "4",
+          "name": "boat-lineup",
+          "selector": [
+            ".mainContent > div:has(img[alt=\"all different boats\"])",
+            ".mainContent > div:nth-child(2)"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            "img[alt=\"all different boats\"]"
+          ]
+        },
+        {
+          "id": "5",
+          "name": "partners",
+          "selector": [
+            ".windowOuter:has(.theLogos)"
+          ],
+          "style": null,
+          "blocks": [
+            "columns-logos"
+          ],
+          "defaultContent": [
+            ".financialPartnerHeading h2"
+          ]
+        }
+      ]
     }
   ]
 }

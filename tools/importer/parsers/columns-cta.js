@@ -9,19 +9,31 @@
  *     div.columns (x3)
  *       a[href] > div.homeButton "Small line <br> <span.homeButtonLoan>Strong line</span>"
  *
+ *   Content pages (/loans/, /protection/, /insurance/) sidebar instance:
+ *   center > br, a[href] > div.homeButton, br, a[href] > div.homeButton, a#lnkBtnInsurance(...)
+ *
  * Output: one row, one cell per tile; each cell = link whose content is
  *   small line <br> <strong>strong line</strong>
  * Iterates the div.columns wrappers (not the anchors) so html2md inline merging
  * of adjacent anchors can never collapse tiles.
  */
 export default function parse(element, { document }) {
-  let tiles = Array.from(element.querySelectorAll(':scope > div.columns'));
-  if (!tiles.length) tiles = Array.from(element.querySelectorAll('.homeButton')).map((b) => b.parentElement);
+  // Iterate the div.homeButton tiles themselves (stable block wrappers) — works for both
+  // the homepage row (div.columns > a > div.homeButton) and the content-page sidebar
+  // (center > a > div.homeButton, separated by <br>). Empty anchors (e.g. the
+  // lnkBtnInsurance postback stub on /loans/ and /protection/) contain no tile and are skipped.
+  let buttons = Array.from(element.querySelectorAll('.homeButton'));
+  if (!buttons.length) {
+    // Fallback: column wrappers without the homeButton class
+    buttons = Array.from(element.querySelectorAll(':scope > div.columns'));
+  }
 
   const row = [];
-  tiles.forEach((tile) => {
-    const button = tile.querySelector('.homeButton') || tile;
-    const srcLink = tile.tagName === 'A' ? tile : (tile.querySelector('a[href]') || button.closest('a[href]'));
+  buttons.forEach((button) => {
+    const tile = button.closest('div.columns') || button;
+    let srcLink = button.closest('a[href]');
+    if (srcLink && !element.contains(srcLink)) srcLink = null;
+    if (!srcLink && tile !== button) srcLink = tile.querySelector('a[href]');
     const strongEl = button.querySelector('.homeButtonLoan, strong, b');
 
     // Small line = button text excluding the strong span

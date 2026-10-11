@@ -37,6 +37,43 @@ export default function transform(hookName, element, payload) {
     // so a bare .cycle-sentinel selector would wipe out all real slide images.
     WebImporter.DOMUtils.remove(element, ['.cycle-slideshow > a.cycle-sentinel']);
 
+    // --- content-page (/loans/, /protection/, /insurance/) ---
+    // Breadcrumb trail: <div class="tunNavContain small-12"><span id="tunnel_navigation_tunnelNav">
+    // (Home » Product Protection). Breadcrumbs are generated from page metadata instead.
+    // The visual rule under it is a CSS border; there is no <hr> element in the markup.
+    // Keep the current page's crumb label (e.g. "Product Protection") for the metadata
+    // transformer, which writes it as "Breadcrumb Title".
+    const crumbs = element.querySelectorAll('.tunNavContain a');
+    const crumbLabel = crumbs.length > 1 ? crumbs[crumbs.length - 1].textContent.trim() : '';
+    if (crumbLabel) element.setAttribute('data-excat-breadcrumb-title', crumbLabel);
+    WebImporter.DOMUtils.remove(element, ['.tunNavContain']);
+
+    // Accordion "close" duplicate toggles (/protection/): <a id="closeEngButton">, <a id="closeAccButton">
+    // repeat the title of the preceding open toggle (#openEngButton / #openAccButton), so the
+    // accordion parser would see two titles per panel. Only remove when an open twin exists.
+    element.querySelectorAll('a[id^="close"][id$="Button"]').forEach((a) => {
+      const openId = a.id.replace(/^close/, 'open');
+      if (element.querySelector(`#${openId}`)) a.remove();
+    });
+
+    // ASP.NET postback links: <a id="lnkBtnInsurance" href="javascript:__doPostBack('ctl00$lnkBtnInsurance','')">.
+    // On /insurance/ it wraps the "Get a Free Quote On boat Insurance" sidebar tile -> real URL.
+    // On /loans/ and /protection/ it is empty -> drop it. Any other postback link is unwrapped.
+    const POSTBACK_TARGETS = { lnkBtnInsurance: 'https://www.boaterschoiceinsurance.com/quote/' };
+    element.querySelectorAll('a[href^="javascript:__doPostBack"]').forEach((a) => {
+      const hasContent = a.textContent.trim() !== '' || a.querySelector('img');
+      if (!hasContent) {
+        a.remove();
+      } else if (POSTBACK_TARGETS[a.id]) {
+        a.setAttribute('href', POSTBACK_TARGETS[a.id]);
+      } else {
+        a.replaceWith(...a.childNodes);
+      }
+    });
+
+    // Stray spacer <br> between .wysiwyg modules inside #pnlContent.
+    WebImporter.DOMUtils.remove(element, ['#pnlContent > br']);
+
     // Inline emphasis: <span class="boldBlue">Call 866-350-2583 today.</span> (bold navy)
     // -> <strong> with the same children so the emphasis survives import.
     const doc = element.ownerDocument;
@@ -48,7 +85,9 @@ export default function transform(hookName, element, payload) {
 
     // Strip trailing <br> / &nbsp; / whitespace runs at the end of .wysiwyg paragraphs
     // (e.g. "...today.</span><br><br><br>&nbsp;</p>"); spacing is handled in CSS.
-    element.querySelectorAll('.wysiwyg p').forEach((p) => {
+    // Content pages put text directly in <div class="wysiwyg"> ("...We've got you covered.<br>&nbsp;"),
+    // so the .wysiwyg container itself is trimmed too.
+    element.querySelectorAll('.wysiwyg p, .wysiwyg').forEach((p) => {
       let last = p.lastChild;
       while (last) {
         const isBr = last.nodeType === 1 && last.tagName === 'BR';
@@ -81,5 +120,17 @@ export default function transform(hookName, element, payload) {
       'link',
       'style',
     ]);
+
+    // Documents (PDF sell sheets etc.) are not migrated: keep them pointing at the source site.
+    let origin = 'https://bluewaterfinance.com';
+    try {
+      origin = new URL(payload?.params?.originalURL || payload?.url).origin;
+    } catch (e) {
+      // no page URL available (e.g. validation harness): keep the source-site default
+    }
+    element.querySelectorAll('a[href]').forEach((a) => {
+      const href = a.getAttribute('href');
+      if (/^\/[^/].*\.(pdf|docx?|xlsx?)(\?|#|$)/i.test(href)) a.setAttribute('href', `${origin}${href}`);
+    });
   }
 }

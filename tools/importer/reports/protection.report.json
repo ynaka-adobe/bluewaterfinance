@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "url": "https://bluewaterfinance.com/protection/",
+  "path": "protection",
+  "timestamp": "2026-10-11T03:03:36.348Z",
+  "title": "Protect Your Customers With Leading Product Protection | Blue Water Finance",
+  "template": "content-page",
+  "blocks": [
+    "hero-caption",
+    "accordion-boxed",
+    "columns-cta",
+    "columns-logos"
+  ]
+}

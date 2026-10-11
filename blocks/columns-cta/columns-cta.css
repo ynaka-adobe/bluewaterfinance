@@ -87,3 +87,33 @@ main .columns-cta a.columns-cta-link:focus {
     margin: 0;
   }
 }
+
+/* sidebar context (content pages: source .medium-3 sidebar <center> tiles).
+ * Tiles stack at every width, centered in the sidebar column (300px max, like the sub-nav box).
+ * Source puts a <br> (24px line) before each tile: 24px above the first tile and between tiles. */
+main .section.sidebar .columns-cta {
+  margin: 24px 0 0;
+}
+
+main .section.sidebar .columns-cta .columns-cta-row {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 24px;
+}
+
+main .section.sidebar .columns-cta .columns-cta-item,
+main .section.sidebar .columns-cta .columns-cta-item:nth-child(2) {
+  flex: none;
+  margin: 0;
+}
+
+/* source sidebar tiles are 88px (24px line pitch, no extra strut on the title line);
+ * a top-aligned inline-block title keeps the line box at 24px in standards and quirks mode */
+main .section.sidebar .columns-cta .columns-cta-title {
+  display: inline-block;
+  vertical-align: top;
+}
+
+main .section.sidebar .columns-cta .columns-cta-title::before {
+  content: none;
+}

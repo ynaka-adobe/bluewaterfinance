@@ -1,0 +1,25 @@
+{
+  "variantName": "hero-caption",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "compact",
+    "purpose": "hero",
+    "imagePattern": "large",
+    "summary": "Single full-width static photo (450px tall at desktop) with the page H1 left-aligned in a translucent dark caption bar along the bottom, orange bottom border"
+  },
+  "contentPattern": {
+    "structure": "background image + caption-bar title",
+    "rows": "1 row x 1 column: picture, then H1",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "usage": {
+    "pagesUsing": ["/protection/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-11T00:00:00.000Z"
+  },
+  "options": [],
+  "memberVariantIds": ["hero-caption"]
+}

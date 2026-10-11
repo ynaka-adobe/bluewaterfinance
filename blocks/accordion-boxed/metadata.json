@@ -1,0 +1,25 @@
+{
+  "variantName": "accordion-boxed",
+  "baseBlock": "accordion",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "document-links",
+    "imagePattern": "none",
+    "summary": "Stacked boxed expandable panels (light grey background, 1px grey border) with navy title and +/- icon; navy hover/open state; body is a bulleted list of PDF links. H2 heading is default content above the block."
+  },
+  "contentPattern": {
+    "structure": "N rows x 2 columns: panel title | bulleted list of PDF links",
+    "rows": "2 rows on /protection/ (8 and 11 links)",
+    "buttonCount": 0,
+    "imageCount": 0
+  },
+  "usage": {
+    "pagesUsing": ["/protection/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-11T00:00:00.000Z"
+  },
+  "options": [],
+  "memberVariantIds": ["accordion-boxed"]
+}

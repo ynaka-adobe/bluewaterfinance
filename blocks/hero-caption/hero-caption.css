@@ -1,0 +1,134 @@
+/*
+ * Hero Caption: full-width photo + bottom caption bar holding the page H1.
+ * Values from source .subPageImage / .subPageTitle (bluewaterfinance.com).
+ * Source breakpoints (max-width 430/520/830/900/1100/1400) are expressed
+ * mobile-first as min-width ranges.
+ */
+.hero-caption-container .hero-caption-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+/* .subPageImage */
+.hero-caption {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-bottom: 4px solid var(--brand-orange);
+  background-color: rgb(0 22 41);
+  text-align: center;
+}
+
+.hero-caption .hero-caption-media {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-caption .hero-caption-media picture {
+  display: block;
+}
+
+/* .subPageImage img: fixed-width photo pinned left, never scaled to fit */
+.hero-caption .hero-caption-media img {
+  position: absolute;
+  top: 120px;
+  left: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
+
+/* .subPageTitle: caption bar anchored to the bottom of the image */
+.hero-caption .hero-caption-caption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 12px 0 0 16px;
+  background: none;
+  text-align: left;
+}
+
+.hero-caption .hero-caption-caption-inner {
+  padding: 0;
+}
+
+/* .subPageTitle h1 */
+.hero-caption .hero-caption-caption :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0 0 8px;
+  padding-left: 0.5em;
+  font-family: var(--heading-font-family);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: rgb(255 255 255);
+}
+
+.hero-caption .hero-caption-caption p {
+  margin: 0;
+  color: rgb(255 255 255);
+}
+
+@media (width > 430px) {
+  .hero-caption {
+    height: 330px;
+  }
+
+  .hero-caption .hero-caption-caption :is(h1, h2, h3, h4, h5, h6) {
+    padding-left: 1em;
+  }
+}
+
+@media (width > 520px) {
+  .hero-caption {
+    background-color: transparent;
+  }
+
+  .hero-caption .hero-caption-media img {
+    width: 830px;
+  }
+
+  .hero-caption .hero-caption-caption {
+    background: rgb(0 0 0 / 65%);
+  }
+}
+
+@media (width > 830px) {
+  .hero-caption {
+    height: 400px;
+  }
+
+  .hero-caption .hero-caption-media img {
+    width: 1100px;
+  }
+}
+
+@media (width > 900px) {
+  .hero-caption .hero-caption-caption :is(h1, h2, h3, h4, h5, h6) {
+    font-size: 32px;
+  }
+}
+
+@media (width > 1100px) {
+  .hero-caption {
+    height: 450px;
+  }
+
+  .hero-caption .hero-caption-media img {
+    width: 1400px;
+  }
+}
+
+@media (width > 1400px) {
+  .hero-caption .hero-caption-media img {
+    top: 0;
+    width: 2000px;
+  }
+}

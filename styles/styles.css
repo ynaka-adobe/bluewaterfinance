@@ -31,7 +31,6 @@
 
   /* nav heights: alert bar (wraps to 3 lines on phones) + 122px navy bar */
   --nav-height: 122px;
-  --breadcrumbs-height: 34px;
   --header-height: calc(97px + var(--nav-height));
 }
 
@@ -130,11 +129,6 @@ footer .footer[data-block-status="loaded"] {
   visibility: visible;
 }
 
-@media (width >= 900px) {
-  body[data-breadcrumbs] {
-    --header-height: calc(var(--nav-height) + var(--breadcrumbs-height));
-  }
-}
 
 h1,
 h2,
@@ -330,8 +324,9 @@ main > .section:first-of-type {
   margin-top: 0;
 }
 
-/* full-bleed hero section has no padding and spans the viewport */
-main > .section.carousel-hero-container {
+/* full-bleed hero sections have no padding and span the viewport */
+main > .section.carousel-hero-container,
+main > .section.hero-caption-container {
   max-width: none;
   padding: 0;
   background-color: #000;
@@ -341,6 +336,12 @@ main > .section.carousel-hero-container {
 main > .section:has(> .default-content-wrapper:first-child > h2:first-child) {
   padding: 0;
 }
+
+/* a section holding only one image (boat line-up on content pages: source padding 32px 0) */
+main > .section:has(> .default-content-wrapper:only-child > p:only-child > picture) {
+  padding: 32px 0;
+}
+
 
 /* section metadata */
 main .section.light,
@@ -370,4 +371,178 @@ main .section.dark {
 
 main .section.dark a:any-link {
   color: var(--background-color);
+}
+
+/* content pages: main column + sidebar (source .pageContent 9/12 + .medium-3 sidebar) */
+main > .section.main-content {
+  padding-bottom: 0;
+}
+
+main > .section.main-content > div,
+main > .section.sidebar > div {
+  padding: 0 35px;
+}
+
+main > .section.sidebar {
+  padding-top: 16px;
+  padding-bottom: 0;
+}
+
+main .section.main-content .default-content-wrapper p {
+  margin: 0 0 16px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+main .section.main-content .default-content-wrapper > h2 {
+  margin: 0 0 8px;
+  padding: 20px 0 10px;
+  color: var(--brand-orange);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: start;
+}
+
+main .section.main-content .default-content-wrapper > h2::before {
+  content: none;
+}
+
+main .section.main-content .default-content-wrapper ul {
+  margin: 0 0 16px 20px;
+  padding: 0;
+}
+
+main .section.main-content .default-content-wrapper li {
+  font-size: 16px;
+  line-height: 25.6px;
+}
+
+main .section.main-content .default-content-wrapper strong {
+  font-weight: 700;
+}
+
+/* list lead-ins stay text-coloured; only standalone emphasis (phone number) is navy */
+main .section.main-content .default-content-wrapper li strong {
+  color: inherit;
+}
+
+main > .section:has(> .default-content-wrapper:only-child > p:only-child > picture) p {
+  margin: 0;
+}
+
+/* breadcrumbs (source .tunNavContain: grey trail, rule below) */
+main > .section > div.breadcrumbs-wrapper {
+  margin: 0 35px 20px;
+  padding: 0 0 16px;
+  border-bottom: 1px solid rgb(157 162 168);
+}
+
+main .breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+main .breadcrumbs li + li::before {
+  content: '\00a0\00a0»\00a0\00a0';
+}
+
+main .breadcrumbs-wrapper .breadcrumbs a:any-link {
+  color: rgb(157 162 168);
+  text-decoration: none;
+}
+
+main .breadcrumbs li:first-child a::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 16px;
+  margin-right: 0.5em;
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'%3E%3Cpath d='M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z'/%3E%3C/svg%3E") center / contain no-repeat;
+  vertical-align: -2px;
+}
+
+/* sidebar sub-page links (source #nav-wrap: grey box, orange dividers) */
+main .section.sidebar .default-content-wrapper {
+  box-sizing: border-box;
+  width: 300px;
+  max-width: calc(100% - 38px);
+  margin: 0 0 0 38px;
+  padding: 10px;
+  background-color: #f8f8f8;
+}
+
+main .section.sidebar .default-content-wrapper ul {
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+main .section.sidebar .default-content-wrapper li {
+  padding: 10px;
+  border-bottom: 1px solid var(--brand-orange);
+  font-size: 16px;
+  line-height: 25.6px;
+}
+
+main .section.sidebar .default-content-wrapper a:any-link {
+  color: #666;
+  text-decoration: none;
+}
+
+main .section.sidebar .default-content-wrapper a:hover,
+main .section.sidebar .default-content-wrapper a:focus {
+  color: var(--brand-orange);
+  text-decoration: underline;
+}
+
+@media (width >= 900px) {
+  main:has(> .section.main-content) {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr) calc(min(1400px, 100%) * 0.75)
+      calc(min(1400px, 100%) * 0.25) minmax(0, 1fr);
+  }
+
+  main:has(> .section.main-content) > .section {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  main:has(> .section.main-content) > .section.main-content {
+    grid-column: 2;
+  }
+
+  main:has(> .section.main-content) > .section.sidebar {
+    grid-column: 3;
+    padding-top: 50px;
+  }
+
+  main > .section.main-content > div {
+    padding: 0 49px 0 35px;
+  }
+
+  main > .section.sidebar > div {
+    padding: 0 50px 0 0;
+  }
+
+  main .section.main-content .default-content-wrapper > h2 {
+    font-size: 24px;
+  }
+
+  main .section.sidebar .default-content-wrapper {
+    max-width: 100%;
+    margin: -15px 0 0;
+  }
+
+  main > .section > div.breadcrumbs-wrapper {
+    margin: 0 49px 20px 35px;
+    padding: 0 0 16px;
+  }
 }

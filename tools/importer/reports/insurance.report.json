@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bluewaterfinance.com/insurance/",
+  "path": "insurance",
+  "timestamp": "2026-10-11T03:03:40.170Z",
+  "title": "Offer The Right Boat Insurance At The Right Price | Blue Water Finance",
+  "template": "content-page",
+  "blocks": [
+    "hero-caption",
+    "columns-cta",
+    "columns-logos"
+  ]
+}

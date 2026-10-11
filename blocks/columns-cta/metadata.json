@@ -18,9 +18,12 @@
     "hasCTA": true
   },
   "usage": {
-    "pagesUsing": ["/"],
-    "reuseCount": 1,
-    "lastUsed": "2026-10-09T00:00:00.000Z"
+    "pagesUsing": [
+      "/",
+      "/protection/index"
+    ],
+    "reuseCount": 2,
+    "lastUsed": "2026-10-11T02:25:35.000Z"
   },
   "options": [],
   "memberVariantIds": []

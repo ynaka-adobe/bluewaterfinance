@@ -87,12 +87,16 @@ var CustomImportScript = (() => {
 
   // tools/importer/parsers/columns-cta.js
   function parse2(element, { document: document2 }) {
-    let tiles = Array.from(element.querySelectorAll(":scope > div.columns"));
-    if (!tiles.length) tiles = Array.from(element.querySelectorAll(".homeButton")).map((b) => b.parentElement);
+    let buttons = Array.from(element.querySelectorAll(".homeButton"));
+    if (!buttons.length) {
+      buttons = Array.from(element.querySelectorAll(":scope > div.columns"));
+    }
     const row = [];
-    tiles.forEach((tile) => {
-      const button = tile.querySelector(".homeButton") || tile;
-      const srcLink = tile.tagName === "A" ? tile : tile.querySelector("a[href]") || button.closest("a[href]");
+    buttons.forEach((button) => {
+      const tile = button.closest("div.columns") || button;
+      let srcLink = button.closest("a[href]");
+      if (srcLink && !element.contains(srcLink)) srcLink = null;
+      if (!srcLink && tile !== button) srcLink = tile.querySelector("a[href]");
       const strongEl = button.querySelector(".homeButtonLoan, strong, b");
       let smallText = "";
       button.childNodes.forEach((n) => {
@@ -197,6 +201,7 @@ var CustomImportScript = (() => {
   // tools/importer/transformers/bluewaterfinance-cleanup.js
   var TransformHook = { beforeTransform: "beforeTransform", afterTransform: "afterTransform" };
   function transform(hookName, element, payload) {
+    var _a;
     if (hookName === TransformHook.beforeTransform) {
       WebImporter.DOMUtils.remove(element, [
         "#onetrust-consent-sdk",
@@ -212,13 +217,33 @@ var CustomImportScript = (() => {
         "input#__EVENTARGUMENT"
       ]);
       WebImporter.DOMUtils.remove(element, [".cycle-slideshow > a.cycle-sentinel"]);
+      const crumbs = element.querySelectorAll(".tunNavContain a");
+      const crumbLabel = crumbs.length > 1 ? crumbs[crumbs.length - 1].textContent.trim() : "";
+      if (crumbLabel) element.setAttribute("data-excat-breadcrumb-title", crumbLabel);
+      WebImporter.DOMUtils.remove(element, [".tunNavContain"]);
+      element.querySelectorAll('a[id^="close"][id$="Button"]').forEach((a) => {
+        const openId = a.id.replace(/^close/, "open");
+        if (element.querySelector(`#${openId}`)) a.remove();
+      });
+      const POSTBACK_TARGETS = { lnkBtnInsurance: "https://www.boaterschoiceinsurance.com/quote/" };
+      element.querySelectorAll('a[href^="javascript:__doPostBack"]').forEach((a) => {
+        const hasContent = a.textContent.trim() !== "" || a.querySelector("img");
+        if (!hasContent) {
+          a.remove();
+        } else if (POSTBACK_TARGETS[a.id]) {
+          a.setAttribute("href", POSTBACK_TARGETS[a.id]);
+        } else {
+          a.replaceWith(...a.childNodes);
+        }
+      });
+      WebImporter.DOMUtils.remove(element, ["#pnlContent > br"]);
       const doc = element.ownerDocument;
       element.querySelectorAll("span.boldBlue").forEach((span) => {
         const strong = doc.createElement("strong");
         while (span.firstChild) strong.appendChild(span.firstChild);
         span.replaceWith(strong);
       });
-      element.querySelectorAll(".wysiwyg p").forEach((p) => {
+      element.querySelectorAll(".wysiwyg p, .wysiwyg").forEach((p) => {
         let last = p.lastChild;
         while (last) {
           const isBr = last.nodeType === 1 && last.tagName === "BR";
@@ -246,6 +271,15 @@ var CustomImportScript = (() => {
         "link",
         "style"
       ]);
+      let origin = "https://bluewaterfinance.com";
+      try {
+        origin = new URL(((_a = payload == null ? void 0 : payload.params) == null ? void 0 : _a.originalURL) || (payload == null ? void 0 : payload.url)).origin;
+      } catch (e) {
+      }
+      element.querySelectorAll("a[href]").forEach((a) => {
+        const href = a.getAttribute("href");
+        if (/^\/[^/].*\.(pdf|docx?|xlsx?)(\?|#|$)/i.test(href)) a.setAttribute("href", `${origin}${href}`);
+      });
     }
   }
 

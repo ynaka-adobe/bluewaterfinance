@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bluewaterfinance.com/loans/",
+  "path": "loans",
+  "timestamp": "2026-10-11T03:03:30.822Z",
+  "title": "Get More Deals Done With Expert Boat Financing | Blue Water Finance",
+  "template": "content-page",
+  "blocks": [
+    "hero-caption",
+    "columns-cta",
+    "columns-logos"
+  ]
+}

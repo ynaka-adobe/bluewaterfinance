@@ -138,6 +138,44 @@ function decorateSections(main) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
+/**
+ * Renders the breadcrumb trail (Home » page) for pages with "Breadcrumbs: true" metadata.
+ * The current crumb uses "Breadcrumb Title" metadata, falling back to the page title.
+ * Placed at the top of the main content section (or the first non-hero section).
+ * @param {Element} main The container element
+ */
+function buildBreadcrumbs(main) {
+  if (getMetadata('breadcrumbs').toLowerCase() !== 'true') return;
+  const sections = [...main.querySelectorAll(':scope > .section')];
+  const target = sections.find((s) => s.classList.contains('main-content'))
+    || sections.find((s) => !s.matches('[class*="hero"]'));
+  if (!target) return;
+
+  const title = getMetadata('breadcrumb-title') || document.title;
+  const nav = document.createElement('nav');
+  nav.className = 'breadcrumbs';
+  nav.setAttribute('aria-label', 'Breadcrumb');
+  const ol = document.createElement('ol');
+  const home = document.createElement('li');
+  const homeLink = document.createElement('a');
+  homeLink.href = '/';
+  homeLink.textContent = 'Home';
+  home.append(homeLink);
+  const current = document.createElement('li');
+  const currentLink = document.createElement('a');
+  currentLink.href = window.location.pathname;
+  currentLink.setAttribute('aria-current', 'page');
+  currentLink.textContent = title;
+  current.append(currentLink);
+  ol.append(home, current);
+  nav.append(ol);
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'breadcrumbs-wrapper';
+  wrapper.append(nav);
+  target.prepend(wrapper);
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
@@ -145,6 +183,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  buildBreadcrumbs(main);
   decorateBlocks(main);
 }
 

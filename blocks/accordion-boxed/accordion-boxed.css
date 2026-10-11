@@ -1,0 +1,109 @@
+/*
+ * Accordion Boxed (source .accordionPP toggle + .panelPP panel)
+ * Values from source computed styles on bluewaterfinance.com/protection
+ */
+
+/* source module puts a <br> (one 24px line) between the title and the first toggle */
+.accordion-boxed {
+  margin-top: 24px;
+  interpolate-size: allow-keywords; /* stylelint-disable-line property-no-unknown */
+}
+
+/* toggle row: light grey box, grey 1px border, navy text, inline +/- icon */
+.accordion-boxed details summary {
+  display: block;
+  margin-bottom: 8px;
+  padding: 18px;
+  border: 1px solid rgb(102 102 102);
+  background-color: rgb(248 248 248);
+  color: var(--brand-navy);
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  cursor: pointer;
+  list-style: none;
+  outline: none;
+  transition: background-color 0.4s, color 0.4s;
+}
+
+.accordion-boxed details summary::-webkit-details-marker {
+  display: none;
+}
+
+.accordion-boxed details summary > :is(h1, h2, h3, h4, h5, h6) {
+  display: inline;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+/* Font Awesome fa-plus / fa-minus (14x16, vertical-align -0.125em) + nbsp gap */
+.accordion-boxed details summary::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 16px;
+  margin-right: 0.26em;
+  vertical-align: -0.125em;
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.accordion-boxed details[open] summary::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M424 318.2c13.3 0 24-10.7 24-24v-76.4c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h400z'/%3E%3C/svg%3E");
+}
+
+/* source .accordionPP:hover (open state keeps the grey box) */
+.accordion-boxed details summary:hover,
+.accordion-boxed details summary:focus-visible {
+  background-color: var(--brand-navy);
+  color: var(--background-color);
+}
+
+/* panel: white, 18px side padding, opens to 300px (source fixed height; min here so long lists never clip) */
+.accordion-boxed .accordion-boxed-item-body {
+  box-sizing: border-box;
+  min-height: 300px;
+  padding: 16px 18px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.accordion-boxed .accordion-boxed-item-body ul {
+  margin: 0 0 0 20px;
+  padding: 0;
+}
+
+.accordion-boxed .accordion-boxed-item-body li {
+  margin: 0;
+}
+
+.accordion-boxed .accordion-boxed-item-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* source animates panel height over 0.4s on open and close */
+/* stylelint-disable selector-pseudo-element-no-unknown */
+.accordion-boxed details::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition: block-size 0.4s, content-visibility 0.4s allow-discrete;
+}
+
+.accordion-boxed details[open]::details-content {
+  block-size: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-boxed details summary,
+  .accordion-boxed details::details-content {
+    transition: none;
+  }
+}
+/* stylelint-enable selector-pseudo-element-no-unknown */
