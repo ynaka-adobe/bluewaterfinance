@@ -278,7 +278,9 @@ var CustomImportScript = (() => {
       }
       element.querySelectorAll("a[href]").forEach((a) => {
         const href = a.getAttribute("href");
-        if (/^\/[^/].*\.(pdf|docx?|xlsx?)(\?|#|$)/i.test(href)) a.setAttribute("href", `${origin}${href}`);
+        if (/^\/[^/].*\.(pdf|docx?|xlsx?)(\?|#|$)/i.test(href) || /^\/(prequalify\/application|apply\/application|apply\/co-applicant)\/?(\?|#|$)/i.test(href)) {
+          a.setAttribute("href", `${origin}${href}`);
+        }
       });
     }
   }

@@ -121,7 +121,9 @@ export default function transform(hookName, element, payload) {
       'style',
     ]);
 
-    // Documents (PDF sell sheets etc.) are not migrated: keep them pointing at the source site.
+    // Documents (PDF sell sheets etc.) and the loan application forms (/prequalify/Application/,
+    // /apply/Application/, /apply/co-applicant/ — server-side apps collecting SSN/financial data)
+    // are not migrated: keep them pointing at the source site.
     let origin = 'https://bluewaterfinance.com';
     try {
       origin = new URL(payload?.params?.originalURL || payload?.url).origin;
@@ -130,7 +132,10 @@ export default function transform(hookName, element, payload) {
     }
     element.querySelectorAll('a[href]').forEach((a) => {
       const href = a.getAttribute('href');
-      if (/^\/[^/].*\.(pdf|docx?|xlsx?)(\?|#|$)/i.test(href)) a.setAttribute('href', `${origin}${href}`);
+      if (/^\/[^/].*\.(pdf|docx?|xlsx?)(\?|#|$)/i.test(href)
+        || /^\/(prequalify\/application|apply\/application|apply\/co-applicant)\/?(\?|#|$)/i.test(href)) {
+        a.setAttribute('href', `${origin}${href}`);
+      }
     });
   }
 }
