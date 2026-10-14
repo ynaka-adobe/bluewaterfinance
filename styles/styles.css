@@ -29,14 +29,22 @@
   --heading-font-size-s: 16px;
   --heading-font-size-xs: 14px;
 
-  /* nav heights: alert bar (wraps to 3 lines on phones) + 122px navy bar */
+  /* nav heights: alert bar + 122px navy bar. The reserved height must match where the
+     fraud-alert text wraps (3 lines < 408px, 2 lines < 748px, 1 line above), otherwise the
+     page jumps when the header loads; re-measure these widths if the alert text changes. */
   --nav-height: 122px;
   --header-height: calc(97px + var(--nav-height));
 }
 
-@media (width >= 600px) {
+@media (width >= 408px) {
   :root {
     --header-height: calc(73px + var(--nav-height));
+  }
+}
+
+@media (width >= 748px) {
+  :root {
+    --header-height: calc(49px + var(--nav-height));
   }
 }
 
@@ -88,9 +96,6 @@
     --heading-font-size-m: 22px;
     --heading-font-size-s: 18px;
     --heading-font-size-xs: 16px;
-
-    /* header: 49px alert bar + 122px navy bar (incl. 6px border) */
-    --header-height: calc(49px + var(--nav-height));
   }
 }
 
